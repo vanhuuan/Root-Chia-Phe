@@ -1,0 +1,4 @@
+drizzle/postgresql/*.sql text eol=lf
+drizzle/postgresql/meta/*.json text eol=lf
+Dockerfile text eol=lf
+*.yaml text eol=lf

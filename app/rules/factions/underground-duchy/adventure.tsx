@@ -1,18 +1,59 @@
 "use client";
-import {useEffect,useState} from "react";
-import {law,scenes,faqs,ministers} from "./story";
+
+import RuleBook, {type RuleTopic} from "../../rule-book";
+import {useState} from "react";
+import {law, scenes, faqs, ministers} from "./story";
 import {SceneLab} from "./labs";
-import "../../adventure.css";
 import "./duchy.css";
-export default function DuchyAdventure(){const [index,setIndex]=useState(0),[step,setStep]=useState(0),[playing,setPlaying]=useState(false),[reduced,setReduced]=useState(false);const scene=scenes[index],current=scene.steps[step],last=step===scene.steps.length-1;
-useEffect(()=>{const media=matchMedia("(prefers-reduced-motion: reduce)");const update=()=>{setReduced(media.matches);if(media.matches)setPlaying(false)};update();media.addEventListener("change",update);return()=>media.removeEventListener("change",update)},[]);
-useEffect(()=>{if(!playing||last)return;const timer=setTimeout(()=>setStep(s=>s+1),12000);return()=>clearTimeout(timer)},[playing,last,index,step]);useEffect(()=>{if(last)setPlaying(false)},[last]);
-function open(i:number){setIndex(i);setStep(0);setPlaying(false)}
-return <section className={`adventure duchy-adventure ${reduced?"reduce-motion":""}`} aria-label="Câu chuyện luật Công quốc Chuột chũi"><div className="adventure-top"><div><span className="eyebrow">UNDERGROUND DUCHY · CHUYỆN CỦA CÔNG QUỐC</span><h1>Từ lòng đất, mở một công quốc.</h1><p>Đào hầm lên rừng, thuyết phục nội các và giữ các công trình trước sóng gió.</p><div className="duchy-jump"><a href="#duchy-reference">Tờ nhắc tại bàn</a><a href="#duchy-faq">Luật dễ nhầm</a></div></div><img className="duchy-portrait" src="/assets/underground-duchy-portrait.webp" alt="Công quốc Chuột chũi"/></div>
-<nav className="scene-selector" aria-label="Chọn cảnh Công quốc Chuột chũi">{scenes.map((s,i)=><button key={s.id} className={i===index?"active":""} aria-current={i===index?"step":undefined} onClick={()=>open(i)}><small>{String(i+1).padStart(2,"0")}</small>{s.title}</button>)}</nav>
-<div className="adventure-spread"><div className="adventure-visual"><div className="visual-heading"><span>CẢNH {index+1}/{scenes.length}</span><b>{scene.title}</b><label><input type="checkbox" checked={reduced} onChange={e=>{setReduced(e.target.checked);if(e.target.checked)setPlaying(false)}}/> Giảm chuyển động</label></div><div className="duchy-worktable" key={scene.id}>
-<SceneLab id={scene.id}/>
-<div className="duchy-model-label">Mô hình học từng luật · các bài tập ở các cảnh độc lập</div></div></div>
-<div className="adventure-narrative"><span className="eyebrow">{scene.title}</span><div className="step-dots" aria-label="Bước trong cảnh">{scene.steps.map((s,i)=><button key={s.title} className={i===step?"current":""} aria-current={i===step?"step":undefined} aria-label={`Bước ${i+1}: ${s.title}`} onClick={()=>{setStep(i);setPlaying(false)}}>{i+1}</button>)}</div><div className="narration" key={`${scene.id}-${step}`} aria-live="polite"><h2>{current.title}</h2><p>{current.story}</p></div><aside className="scene-rule"><b>Luật cần nhớ</b><p>{current.rule}</p><a href={law} target="_blank" rel="noreferrer">Law of Root · {scene.ref}</a></aside><div className="story-playback"><button disabled={last||reduced} onClick={()=>setPlaying(p=>!p)}>{playing?"Tạm dừng":"Tự phát"}</button><button onClick={()=>{setStep(0);setPlaying(!reduced)}}>Đọc lại cảnh</button><button disabled={last} onClick={()=>{setStep(scene.steps.length-1);setPlaying(false)}}>Đến cuối cảnh</button></div><div className="story-navigation"><button className="ghost" disabled={index===0&&step===0} onClick={()=>{setPlaying(false);if(step>0)setStep(s=>s-1);else open(index-1)}}>Quay lại</button><button className="primary" disabled={last&&index===scenes.length-1} onClick={()=>{setPlaying(false);if(last)open(index+1);else setStep(s=>s+1)}}>{last?index===scenes.length-1?"Đã hết câu chuyện":"Sang cảnh tiếp":"Tiếp tục câu chuyện"}</button></div><small className="story-example-note">Standard Setup; tự phát 12 giây mỗi bước, dừng cuối cảnh. Luật card, map và hireling cụ thể vẫn áp dụng; các mô hình chưa mô phỏng toàn bộ trận.</small></div></div>
-<section id="duchy-reference" className="duchy-reference"><span className="eyebrow">TRA NHANH KHI CHƠI</span><h2>Một lượt Công quốc Chuột chũi</h2><div className="duchy-reference-grid"><div><h3>Birdsong</h3><p>Đặt 1 warrior + mỗi icon warrior đang lộ vào Burrow.</p></div><div><h3>Daylight · đúng thứ tự</h3><ol><li>Assembly: tối đa 2 action.</li><li>Parliament: mỗi bộ trưởng đã Sway, 1 lần tùy thứ tự.</li><li>Sway: tối đa 1 bộ trưởng mới.</li></ol></div><div><h3>Evening</h3><ol><li>Discard Chim reveal, trả lá reveal khác.</li><li>Craft bằng Citadel/Market.</li><li>Rút 1 + bonus; bỏ xuống 5.</li></ol></div></div><div className="duchy-table-scroll"><table><caption>Assembly · tối đa 2 action tổng cộng, được lặp</caption><thead><tr><th>Action</th><th>Chi phí và điều kiện</th></tr></thead><tbody><tr><th>Build</th><td>Reveal 1 lá matching; đặt Citadel/Market ở clearing bạn rule, còn slot.</td></tr><tr><th>Recruit</th><td>Đặt 1 warrior nguồn vào Burrow.</td></tr><tr><th>Move</th><td>1 Move hợp lệ theo adjacency và rule.</td></tr><tr><th>Battle</th><td>Khởi xướng 1 Battle hợp lệ.</td></tr><tr><th>Dig</th><td>Spend 1 lá matching, đặt tunnel nơi chưa có tunnel rồi Move 1–4 quân từ Burrow. Cả 3 tunnel ở map thì được thu hồi 1 trước.</td></tr></tbody></table></div><div className="duchy-table-scroll"><table><caption>Đủ 9 bộ trưởng · tên tiếng Anh để đối chiếu thẻ thật</caption><thead><tr><th>Bộ trưởng</th><th>Cấp / lá Sway</th><th>Action Parliament</th></tr></thead><tbody>{ministers.map(m=><tr key={m.name}><th scope="row">{m.name}<small className="duchy-minister-vi">{m.vi}</small></th><td>{m.rank} · {m.cards} lá</td><td>{m.action}</td></tr>)}</tbody></table></div><div className="duchy-result">Sway: mỗi clearing matching có piece Công quốc hỗ trợ 1 lá.<br/>Cần crown đúng rank; VP đọc ô crown vừa mở. Người mới dùng action từ lượt sau.</div><p>Price of Failure: một sự kiện mất một hoặc nhiều building → trả một bộ trưởng rank cao nhất, bỏ crown vĩnh viễn, discard ngẫu nhiên một lá. Mất tunnel/warrior không kích hoạt.</p><a href={law} target="_blank" rel="noreferrer">Luật chính thức Leder Games · phần 12: Underground Duchy</a><p className="duchy-note">Diễn giải tiếng Việt theo Law of Root, phần 12, đối chiếu Rules Library và Learning to Play của Leder Games. Tên Việt bộ trưởng là nhãn giúp nhớ; đối chiếu tên Anh trên thẻ thật. Artwork có sẵn từ Leder Games / Kyle Ferrin. Các mô hình minh họa từng luật, không mô phỏng toàn bộ trận; luật card, map, hireling và setup riêng vẫn áp dụng.</p></section>
-<section id="duchy-faq" className="duchy-faq"><span className="eyebrow">GỠ NHỮNG CHỖ DỄ NHẦM</span><h2>Hỏi nhanh tại bàn</h2>{faqs.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}<a href="/rules" className="rules-nav-link">Ôn lại luật cơ bản</a></section></section>}
+
+const titles: Record<string, [string, string, string]> = {
+  setup: ["Chuẩn bị phe", "Quân, công trình và Burrow", "Bộ trưởng, crown và bài tay"],
+  burrow: ["Burrow và di chuyển qua tunnel", "Burrow luôn do Công quốc rule", "Hai tunnel cần hai Move qua Burrow"],
+  birdsong: ["Birdsong: đặt quân vào Burrow", "Một quân cộng bonus Citadel", "Phân biệt với Recruit của Assembly"],
+  assembly: ["Daylight: Assembly, Parliament, Sway", "Tối đa hai action Assembly tổng cộng", "Thực hiện đúng thứ tự"],
+  build: ["Build: Citadel và Market", "Reveal bài matching để Build", "Foremole dùng bài bất kỳ"],
+  dig: ["Dig: spend bài, đặt tunnel và Move", "Move từ một đến bốn warrior", "Thu hồi tunnel khi cả ba đã trên bản đồ"],
+  parliament: ["Parliament: dùng bộ trưởng đã Sway", "Mỗi bộ trưởng hành động một lần", "Hoàn thành action trước khi dùng người khác"],
+  combo: ["Brigadier và Mayor", "Hai Move hoặc hai Battle", "Mayor sao chép Squire hoặc Noble khác"],
+  sway: ["Sway: bài và clearing có hiện diện", "Mỗi clearing hỗ trợ một lá", "Chim vẫn cần clearing riêng"],
+  crowns: ["Crown và VP khi Sway", "Cần crown chưa dùng đúng cấp", "VP nhận ngay; action chờ lượt sau"],
+  banker: ["Banker và ba Lord: action ghi điểm", "Banker spend các lá cùng chất", "Lord đếm pieces trên bản đồ"],
+  failure: ["Price of Failure khi mất building", "Trả bộ trưởng có rank cao nhất", "Một lần cho một sự kiện loại đồng thời"],
+  evening: ["Evening: trả bài, craft và rút", "Discard Chim đã reveal; trả các lá khác", "Craft bằng từng Citadel và Market"],
+  example: ["Ví dụ áp dụng trong một lượt", "Assembly và Parliament", "Sway và Evening"],
+  strategy: ["Gợi ý sử dụng phe · không phải luật", "Lập kế hoạch action và Sway", "Bảo vệ công trình và quản lý crown"]
+};
+
+const topics: RuleTopic[] = scenes.map(scene => ({
+  id: scene.id,
+  title: titles[scene.id][0],
+  ref: scene.ref,
+  steps: scene.steps.map((step, index) => ({
+    title: titles[scene.id][index + 1],
+    rule: `${step.story} ${step.rule}`
+  }))
+}));
+
+function TopicExample({id}: {id: string}) {
+  const [version, setVersion] = useState(0);
+  const interactive = ["burrow", "dig", "parliament", "combo", "sway", "crowns", "banker", "failure"].includes(id);
+  return <div className="duchy-worktable"><SceneLab key={version} id={id}/>{interactive && <button onClick={() => setVersion(value => value + 1)}>Đặt lại ví dụ</button>}</div>;
+}
+
+export default function DuchyAdventure() {
+  return <div className="duchy-adventure">
+    <RuleBook id="duchy" name="Công quốc Chuột chũi" subtitle="UNDERGROUND DUCHY · LUẬT PHE" description="Tra cứu setup, Burrow, từng bước của lượt, chín bộ trưởng và các điều kiện Sway. Mỗi ví dụ tương tác độc lập với các ví dụ khác." portrait="/assets/underground-duchy-portrait.webp" law={law} topics={topics} renderExample={topic => <TopicExample id={topic.id}/>}>
+      <section id="duchy-reference" className="duchy-reference">
+        <span className="eyebrow">TRA NHANH KHI CHƠI</span><h2>Một lượt Công quốc Chuột chũi</h2>
+        <div className="duchy-reference-grid"><div><h3>Birdsong</h3><p>Đặt 1 warrior + mỗi icon warrior đang lộ vào Burrow.</p></div><div><h3>Daylight · đúng thứ tự</h3><ol><li>Assembly: tối đa 2 action.</li><li>Parliament: mỗi bộ trưởng đã Sway, 1 lần tùy thứ tự.</li><li>Sway: tối đa 1 bộ trưởng mới.</li></ol></div><div><h3>Evening</h3><ol><li>Discard Chim reveal, trả lá reveal khác.</li><li>Craft bằng Citadel/Market.</li><li>Rút 1 + bonus; bỏ xuống 5.</li></ol></div></div>
+        <div className="duchy-table-scroll"><table><caption>Assembly · tối đa 2 action tổng cộng, được lặp</caption><thead><tr><th>Action</th><th>Chi phí và điều kiện</th></tr></thead><tbody><tr><th>Build</th><td>Reveal 1 lá matching; đặt Citadel/Market ở clearing bạn rule, còn slot.</td></tr><tr><th>Recruit</th><td>Đặt 1 warrior từ nguồn vào Burrow.</td></tr><tr><th>Move</th><td>1 Move hợp lệ theo adjacency và rule.</td></tr><tr><th>Battle</th><td>Khởi xướng 1 Battle hợp lệ.</td></tr><tr><th>Dig</th><td>Spend 1 lá matching, đặt tunnel nơi chưa có tunnel rồi Move 1–4 quân từ Burrow. Cả 3 tunnel ở bản đồ thì được thu hồi 1 trước.</td></tr></tbody></table></div>
+        <div className="duchy-table-scroll"><table><caption>Đủ 9 bộ trưởng · đối chiếu tên trên thẻ thật</caption><thead><tr><th>Bộ trưởng</th><th>Cấp / lá Sway</th><th>Action Parliament</th></tr></thead><tbody>{ministers.map(m => <tr key={m.name}><th scope="row">{m.name}<small className="duchy-minister-vi">{m.vi}</small></th><td>{m.rank} · {m.cards} lá</td><td>{m.action}</td></tr>)}</tbody></table></div>
+        <div className="duchy-result">Sway: mỗi clearing matching có piece Công quốc hỗ trợ 1 lá.<br/>Cần crown đúng rank; VP đọc ô crown vừa mở. Bộ trưởng mới dùng action từ lượt sau.</div>
+        <p>Price of Failure: một sự kiện mất một hoặc nhiều building → trả một bộ trưởng rank cao nhất, bỏ crown vĩnh viễn, discard ngẫu nhiên một lá. Mất tunnel/warrior không kích hoạt.</p>
+        <a href={law} target="_blank" rel="noreferrer">Luật chính thức Leder Games · phần 12: Underground Duchy</a>
+        <p className="duchy-note">Diễn giải tiếng Việt theo Law of Root, phần 12, đối chiếu Rules Library và Learning to Play của Leder Games. Tên Việt bộ trưởng là nhãn giúp nhớ; đối chiếu tên Anh trên thẻ thật. Artwork có sẵn từ Leder Games / Kyle Ferrin. Các mô hình minh họa từng luật, không mô phỏng toàn bộ trận; luật card, map, hireling và setup riêng vẫn áp dụng.</p>
+      </section>
+      <section id="duchy-faq" className="duchy-faq"><span className="eyebrow">LUẬT DỄ NHẦM</span><h2>Hỏi nhanh tại bàn</h2>{faqs.map(([q,a]) => <article key={q}><h3>{q}</h3><p>{a}</p></article>)}<a href="/rules" className="rules-nav-link">Ôn lại luật cơ bản</a></section>
+    </RuleBook>
+  </div>;
+}

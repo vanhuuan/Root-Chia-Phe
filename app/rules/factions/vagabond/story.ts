@@ -1,3 +1,4 @@
+import type {RuleTopic} from "../../rule-book";
 import type {ItemKind} from "./model";
 export const law="https://cdn.shopify.com/s/files/1/0106/0162/7706/files/Root_Base_Law_Oct_2025.pdf?v=1774903758";
 export const characters:{id:string;name:string;set:string;items:ItemKind[];ability:string;note:string}[]=[
@@ -14,65 +15,305 @@ export const characters:{id:string;name:string;set:string;items:ItemKind[];abili
 {id:"gladiator",name:"Gladiator · Đấu sĩ",set:"Homeland",items:["boot","torch","hammer"],ability:"Duel: exhaust rồi damage 1 item để loại 1 warrior địch tại clearing của bạn và rút 1 lá. Không chuyển sang Hostile vì Duel.",note:"Duel không phải battle và không có Infamy. Ngoại lệ không Hostile chỉ dành cho Duel, không áp dụng Battle/Strike của bạn."},
 {id:"jailor",name:"Jailor · Cai ngục",set:"Homeland",items:["boot","crossbow","torch"],ability:"Coerce: 1 lần/lượt, spend lá matching clearing để thay việc exhaust 1 item. Sau hành động được trả/thêm bằng cách này, mất 1 VP. Có thể chen vào hành động trong lượt của bạn.",note:"Có thể thay 1 item cho Repair, Craft, Aid, Quest hoặc trả dịch vụ Riverfolk theo luật. Không tự biến thành item sở hữu hay Kiếm lành để tăng trần hit."}
 ];
-export const scenes=[
-{id:"setup",title:"Một người giữa khu rừng",ref:"§9.2.2; §9.3",steps:[
-{title:"Không quân, không thành phố",story:"Các phe dựng vương quốc. Lãng khách chỉ mang một chiếc ba lô và đứng trong forest. Bạn không tuyển warrior, không xây building, và pawn của bạn không góp vào quyền cai trị.",rule:"Pawn không phải warrior, không rule và không chặn phe khác rule. Pawn không bị loại khỏi map. Nếu hiệu ứng loại mọi piece địch như Revolt/Bom tác động bạn, damage 3 item thay vì lấy pawn ra."},
-{title:"Soạn hành trang trước chuyến đi",story:"Chọn nhân vật rồi nhận item khởi đầu đúng thẻ. Bốn item R được giấu ngẫu nhiên dưới bốn ruin: Giày, Kiếm, Búa, Túi. Ba quest ngửa chờ bạn chọn.",rule:"Standard: chọn character, pawn ở một forest bất kỳ, mở 3 quest, mỗi ruin 1 item R; lấy item S đúng character; quan hệ với mọi phe không phải Vagabond ở Indifferent. ADSET theo thẻ riêng; hai Vagabond dùng luật riêng ở cảnh cuối."}]},
-{id:"characters",title:"Chọn người lên đường",ref:"Phụ lục V.1–V.12",steps:[
-{title:"Cùng luật, khác hành trang",story:"Thief có Trà để làm được nhiều việc. Tinker đã có Búa và Túi. Ranger mang Nỏ lẫn Kiếm. Mỗi người khởi đầu với một thế mạnh, nhưng cũng thiếu thứ gì đó.",rule:"Chọn character trước khi lấy item khởi đầu. Đọc đủ item và timing kỹ năng, không dùng kỹ năng Knave Captain cùng tên thay luật Vagabond. Các nút dưới đây là bảng tra cả 12 character, không phải mọi bộ game đều có đủ."},
-{title:"Đuốc không làm được mọi việc cùng lúc",story:"Một Đuốc có thể mở ruin hoặc trả kỹ năng đặc biệt. Dùng cho việc này nghĩa là chưa sẵn dùng cho việc kia. Kế hoạch của bạn bắt đầu từ món đồ còn ngửa.",rule:"Special Action dùng đúng item/timing trên thẻ. Một số kỹ năng là hiệu ứng trong battle, không phải hành động Daylight độc lập. Item phải ngửa và lành để exhaust, trừ ngoại lệ nêu rõ."}]},
-{id:"items",title:"Ngửa, úp và hỏng",ref:"§9.2.5–9.2.7",steps:[
-{title:"Dùng không có nghĩa là mất",story:"Bạn dùng Giày để đi: lật nó úp nhưng vẫn giữ. Khi trúng hit, bạn chọn một item lành để đưa vào Damaged box. Hai điều ấy khác nhau.",rule:"Exhaust: lật item ngửa, lành thành úp. Damage: đưa item lành vào Damaged box, giữ mặt hiện tại. Một item có thể vừa hỏng vừa úp. Item hỏng không thể exhaust để trả hành động."},
-{title:"Ba track nằm ngoài ba lô",story:"Trà, Tiền và Túi ngửa lành tự về track còn chỗ, tối đa ba mỗi loại. Dùng chúng cho Aid hoặc Quest khiến chúng úp và rơi về Satchel, mất bonus lúc đang úp.",rule:"Track Trà/Tiền/Túi chỉ chứa item lành, ngửa. Mỗi track tối đa 3. Item dư ngửa ở Satchel vẫn tính sức chứa và không cho bonus track. Satchel và Damaged đều tính sức chứa; item trên track không tính."}]},
-{id:"refresh",title:"Bình minh và chén trà",ref:"§9.4.1",steps:[
-{title:"Đếm Trà trước khi hồi sức",story:"Một Trà ngửa sẵn trên track cho bạn thêm hai lần refresh. Trà đang úp có thể được lật trong bước này, nhưng không cho thêm lượt refresh ngay lập tức.",rule:"Refresh: 2 item úp cho mỗi Trà ngửa trên Refresh track khi bước bắt đầu, rồi thêm 3 item úp. Chọn item cần lật; Trà vừa refresh không tăng ngân sách của bước hiện tại."},
-{title:"Refresh không sửa đồ",story:"Bạn có thể lật một Kiếm hỏng đang úp thành ngửa. Nhưng nó vẫn nằm trong Damaged box và vẫn không thể dùng để battle.",rule:"Refresh đổi mặt, không bỏ trạng thái hỏng. Repair đổi trạng thái hỏng, không đổi mặt. Dùng ngân sách refresh cho đồ hỏng có thể hữu ích để chuẩn bị Repair sau đó."}]},
-{id:"slip",title:"Lách khỏi những cuộc chiến",ref:"§9.4.2; §9.2.10",steps:[
-{title:"Một lần lách khi trời sáng",story:"Sau Refresh, bạn có thể Slip đến một clearing hoặc forest kề. Không dùng Giày, kể cả lách đến nơi có warrior Hostile.",rule:"Slip tùy chọn, một move ở Birdsong, không exhaust Giày. Cho phép vào/ra forest theo adjacency. Bỏ mọi hiệu ứng ngăn move ra clearing, ví dụ Snare Quạ."},
-{title:"Lách không phải dịch chuyển tự do",story:"Bạn vẫn phải chọn nơi kề. Lệnh cấm move vào một nơi vẫn có thể chặn bạn; Slip chỉ nêu ngoại lệ cho lệnh cấm rời clearing.",rule:"Nimble bỏ yêu cầu rule; Slip bỏ chi phí Giày và hạn chế move ra. Không tự bỏ adjacency hay mọi lệnh cấm move vào. Muốn vào forest bình thường, giữ Slip cho bước này."}]},
-{id:"move",title:"Đường đi và chiếc giày",ref:"§9.5.1; §9.2.3; §9.2.9.IIIb",steps:[
-{title:"Đi bao nhiêu tùy item",story:"Daylight không giới hạn ba hành động như Quạ. Mỗi lần Move trả một Giày. Nếu clearing đích có warrior của phe Hostile, trả thêm một Giày cho lần Move ấy.",rule:"Move thường: 1 Giày + 1 nếu đích có bất kỳ warrior Hostile. Nhiều phe Hostile cùng đó vẫn chỉ thêm 1. Building/token Hostile không có warrior không làm tăng chi phí."},
-{title:"Forest có một cửa riêng",story:"Trong Daylight, bạn có thể từ forest đi ra clearing kề bằng Giày, nhưng không dùng Move thường để chui vào forest. Một route sai không trở thành đúng chỉ vì còn nhiều Giày.",rule:"Move thường bỏ yêu cầu rule nhờ Nimble, vẫn cần adjacency và đường hợp lệ giữa clearings. Không Move thường vào forest hoặc forest sang forest. Slip mới cho move vào forest; kỹ năng riêng đọc đúng ngoại lệ."}]},
-{id:"explore",title:"Món đồ dưới đống đá",ref:"§9.5.3",steps:[
-{title:"Một Đuốc, một item",story:"Đến clearing có ruin, bạn exhaust Đuốc và lấy một item R bên dưới. Item nhận được ngửa nên có thể dùng tiếp ngay nếu phù hợp.",rule:"Explore tại clearing hiện tại: exhaust 1 Đuốc, lấy 1 item dưới ruin, +1 VP nếu thực sự lấy item. Nếu đó là item cuối, loại ruin để mở slot. Không cần rule và không lấy item từ nguồn craft."},
-{title:"Khám phá không phải craft",story:"Kiếm R vừa tìm ra không lấy mất Kiếm trong nguồn craft. Item khởi đầu S, item ruin R và item craft là các nguồn riêng.",rule:"Không nhận VP lần nữa khi chỉ dùng item. Một ruin có 2 item trong game hai Vagabond cần hai Explore để lấy cả hai; chỉ lấy 1 item mỗi action và áp dụng giới hạn item R."}]},
-{id:"aid",title:"Một món quà có điều kiện",ref:"§9.5.4",steps:[
-{title:"Trao bài, dùng đồ, nhận item",story:"Ở làng Cáo có piece Mèo, bạn exhaust một item bất kỳ và đưa Mèo lá Cáo hoặc Chim. Sau đó có thể lấy một item Mèo đã craft, nếu còn.",rule:"Aid cần: item ngửa lành bất kỳ + lá matching clearing + đối tượng có piece phe ở cùng clearing. Nhận tối đa 1 item từ Crafted Items box của họ, ngửa; họ không được từ chối hành động hợp lệ."},
-{title:"Không mua từ ba lô người khác",story:"Mèo không có item vẫn có thể nhận Aid để tăng quan hệ. Nhưng Lãng khách khác không có Crafted Items box để bạn lấy item trong Satchel của họ.",rule:"Lấy item là tùy chọn, không phải điều kiện để Aid. Có thể Aid người chơi Hostile; vẫn trả đủ và có thể lấy item, nhưng không cải thiện quan hệ bằng Aid. Không lấy item khởi đầu/ruin từ board Vagabond khác."}]},
-{id:"relationships",title:"Tình bạn đếm theo lượt",ref:"§9.2.9.I–IIa",steps:[
-{title:"Một, rồi hai, rồi ba",story:"Từ Indifferent, một Aid lên mức đầu và ghi một điểm. Từ đó cần hai Aid cùng lượt để lên mức kế, ghi hai điểm. Rồi ba Aid cùng lượt để thành Allied, ghi hai điểm.",rule:"Chi phí theo từng chặng là 1 → 2 → 3 Aid; VP lên mức là +1 → +2 → +2. Một Aid chỉ trả cho một lần cải thiện. Có thể lên nhiều mức trong cùng lượt nếu đủ 6 Aid từ Indifferent."},
-{title:"Quà dang dở không chuyển sang ngày mai",story:"Bạn đã Aid một lần trong chặng cần hai nhưng kết thúc lượt. Lượt sau phải làm đủ hai lần mới đi tiếp; marker đã lên mức thì vẫn ở đó.",rule:"Chỉ tiến độ chưa đủ ngưỡng reset khi hết lượt; mức quan hệ giữ lại. Sau khi đã Allied, mỗi Aid tiếp theo +2 VP. Aid đạt Allied chỉ nhận +2 cho việc lên mức, không cộng thêm +2 lần nữa."}]},
-{id:"allied",title:"Đi cùng người bạn",ref:"§9.2.9.IIb–IId",steps:[
-{title:"Quân đồng minh đi cùng",story:"Khi Move, bạn có thể kéo warrior của một phe Allied theo pawn đến clearing đích. Khi tấn công, có thể dùng warrior một phe Allied tại đó như quân của mình.",rule:"Chỉ chọn 1 phe Allied mỗi move/battle. Trần rolled hit khi dùng họ = Kiếm lành + số warrior Allied tham chiến. Không dùng warrior của chính phe bạn đang tấn công. Không mang họ bằng move chỉ cho pawn như Glide."},
-{title:"Đừng để bạn bè chịu hết đòn",story:"Trong battle bạn dùng quân Allied, bạn được chọn damage item hoặc loại warrior của họ để nhận hit. Nếu họ chịu nhiều hit hơn item của bạn, cuối battle họ chuyển Hostile.",rule:"So toàn bộ hit bạn nhận bằng warrior Allied và bằng damage item trong cùng battle. Allied mất nhiều hơn → Hostile cuối battle; bằng nhau thì không. Đây là ngoại lệ riêng, không chuyển Hostile ngay sau warrior Allied đầu tiên."}]},
-{id:"battle",title:"Kiếm úp vẫn sắc",ref:"§9.2.4; §9.2.6–9.2.7; §9.5.2; §4.3",steps:[
-{title:"Một kiếm để mở trận",story:"Bạn phải có Kiếm ngửa lành để exhaust khởi xướng battle. Nhưng sau khi nó úp, nó vẫn góp vào trần rolled hit. Có hai Kiếm lành, roll 3 vẫn chỉ gây tối đa hai rolled hit.",rule:"Battle tốn 1 Kiếm. Trần rolled hit = tổng Kiếm lành trong Satchel, ngửa hoặc úp, cộng warrior Allied nếu dùng. Extra hit không bị trần này giới hạn. Không có Kiếm ngửa thì không khởi xướng bằng Battle thường."},
-{title:"Trúng đòn, chọn món đồ hy sinh",story:"Mỗi hit bạn nhận làm hỏng một item lành bạn chọn, giữ nguyên mặt. Kiếm hỏng không góp sức đánh. Nếu hết item lành, bỏ qua hit còn lại, pawn vẫn trên map.",rule:"Khi phòng thủ, không cần exhaust Kiếm. Có Kiếm lành úp vẫn không defenseless; chỉ khi không còn Kiếm lành thì bên tấn công có +1 extra hit defenseless. Ambush và hiệu ứng battle khác vẫn áp dụng."}]},
-{id:"hostile",title:"Danh tiếng hay tai tiếng?",ref:"§9.2.9.III; §3.2.1",steps:[
-{title:"Warrior đầu tiên đổi quan hệ",story:"Bạn loại một warrior của phe chưa Hostile: marker chuyển sang Hostile. Chính warrior gây chuyển trạng thái không cho điểm Infamy. Nếu tiếp tục loại piece của phe đó trong battle thuộc lượt mình, những piece còn lại mới có thưởng.",rule:"Infamy = +1 VP mỗi piece Hostile bạn loại trong battle trong lượt của mình, trừ warrior làm họ Hostile. Building/token còn cho +1 cơ bản. Chỉ loại building/token của phe chưa Hostile không tự làm họ Hostile."},
-{title:"Phòng thủ và bắn nỏ không giống tấn công",story:"Bạn phòng thủ trong lượt địch: building/token vẫn cho điểm cơ bản, nhưng không có Infamy. Strike loại warrior làm họ Hostile, nhưng không phải battle nên không có Infamy.",rule:"Infamy cần đủ hai điều: trong battle và trong lượt của bạn. Hostile không về lại thân thiện bằng Aid. Move thường vào clearing có warrior Hostile tốn thêm 1 Giày; Slip không tốn thêm."}]},
-{id:"strike",title:"Một phát nỏ ngoài trận",ref:"§9.5.6",steps:[
-{title:"Nhắm warrior trước",story:"Dùng Nỏ để loại một warrior của phe địch tại clearing hiện tại. Nếu phe ấy không có warrior tại đây, mới được chọn piece phe khác của họ như building hoặc token.",rule:"Strike exhaust 1 Nỏ; không roll, không ambush, không nhận hit phòng thủ. Kiểm tra warrior của chính phe mục tiêu, không phải tất cả quân trên clearing. Không dùng Strike để ưu tiên building khi phe ấy vẫn có warrior."},
-{title:"Bắn không có thưởng Infamy",story:"Bắn warrior chưa Hostile khiến họ Hostile nhưng không cho VP warrior. Bắn token không có lính bảo vệ cho một điểm cơ bản, kể cả phe đã Hostile cũng không cộng Infamy.",rule:"Strike không phải battle. Loại warrior thường 0 VP; loại building/token +1 VP theo luật chung. Khi loại warrior phe chưa Hostile, đổi quan hệ; skill có ngoại lệ nêu rõ thì theo skill."}]},
-{id:"quest",title:"Nhiệm vụ của một làng",ref:"§9.5.5",steps:[
-{title:"Hai item, đúng clearing",story:"Bạn chọn một trong ba quest ngửa matching clearing. Exhaust cả hai item yêu cầu, giữ quest đã hoàn thành rồi chọn nhận điểm hoặc hai lá bài.",rule:"Quest cần đúng suit clearing và đủ 2 item ngửa lành được ghi. Nếu cần 2 cùng loại phải có 2 item riêng. Không spend lá matching để thay item theo luật thường. Skill Adventurer/Cheat là ngoại lệ."},
-{title:"Theo một suit, điểm tăng dần",story:"Quest Thỏ đầu tiên cho một điểm, quest Thỏ thứ hai cho hai, thứ ba cho ba nếu chọn điểm. Quest đã chọn rút bài vẫn nằm trong số quest hoàn thành để tính lần sau.",rule:"Chọn +VP bằng số quest đã hoàn thành cùng suit, tính cả quest mới, HOẶC rút 2 lá, không cả hai. Sau đó rút quest mới thay chỗ. Quest suit khác không góp vào số điểm lần này; Cheat đưa quest Con trở lại deck."}]},
-{id:"craft",title:"Búa và nghề thủ công",ref:"§9.2.1; §9.5.8; §4.1",steps:[
-{title:"Pawn là crafting piece",story:"Một Búa cho bạn kích hoạt pawn một lần để trả một crafting icon. Hai icon Cáo cần hai Búa ngửa lành và pawn ở clearing Cáo. Lá bài suit Chuột vẫn có thể craft ở Cáo nếu cost là Cáo.",rule:"Craft theo crafting icons, không theo suit lá bài. Exhaust 1 Búa mỗi icon; clearing hiện tại phải matching tất cả icon. Búa cho kích hoạt pawn nhiều lần, bỏ giới hạn 1 lần/piece; không tự cho cùng Búa exhaust nhiều lần."},
-{title:"Đồ mới ngửa, dùng ngay",story:"Craft một item còn trong nguồn chung: lấy item ngửa và điểm in trên lá. Bạn có thể dùng nó tiếp trong Daylight. Effect card được xử lý đúng nội dung, không tự cho item hay VP.",rule:"Cost gồm nhiều suit khác nhau thường không trả được tại một clearing thường. Không craft item đã hết nguồn. Không chia một lần craft qua nhiều clearing. Có thể di chuyển rồi craft lá khác nếu còn item trả hành động."}]},
-{id:"repair",title:"Sửa và nghỉ là hai việc",ref:"§9.5.7; §9.6.1",steps:[
-{title:"Búa giữ nguyên mặt đồ",story:"Dùng một Búa ngửa lành để đưa một item hỏng về Satchel. Nếu item ấy đang úp, nó vẫn úp; sửa xong chưa chắc dùng ngay được.",rule:"Repair exhaust 1 Búa, sửa đúng 1 item, giữ mặt. Item Trà/Tiền/Túi được sửa ngửa về track nếu còn chỗ. Búa hỏng không thể tự dùng để sửa chính nó."},
-{title:"Một tối trong rừng",story:"Kết thúc Daylight ở forest, Evening Rest sửa mọi item hỏng và lật chúng ngửa. Những item lành đã úp thì vẫn úp, chờ Refresh lần sau.",rule:"Rest chỉ khi ở forest, vào đầu Evening. Chỉ các item trong Damaged box được sửa và lật ngửa, không refresh toàn bộ đồ lành. Slip vào forest rồi Move ra clearing trong Daylight sẽ mất Rest tối đó."}]},
-{id:"evening",title:"Kiểm tra chiếc ba lô",ref:"§9.6",steps:[
-{title:"Nghỉ, rút, bỏ bài, rồi kiểm tra đồ",story:"Đầu tối có thể Rest nếu ở forest. Sau đó rút một lá và thêm một lá mỗi Tiền ngửa trên track. Tay quá năm lá thì bỏ xuống năm, rồi kiểm tra item.",rule:"Evening đúng thứ tự Rest → Draw 1 + Tiền track → discard tay xuống 5 → Check Item Capacity. Tiền hỏng/úp/ngoài track không cho bonus. Không tự nhận VP mỗi Evening."},
-{title:"Túi úp làm hành trang nặng hơn",story:"Túi ngửa trên track tăng giới hạn hai item và không nằm trong số phải đếm. Exhaust Túi làm nó rơi vào Satchel: mất hai sức chứa và thêm một item vào ba lô.",rule:"Giới hạn = 6 + 2 mỗi Túi ngửa trên track. Đếm item trong Satchel + Damaged. Dư item cuối Evening phải chọn bỏ vĩnh viễn từ hai khu đó; không đưa lại nguồn craft, không chỉ discard tạm. Không kiểm tra giới hạn ngay sau từng action."}]},
-{id:"coalition",title:"Chung một chiến thắng",ref:"§9.2.8; §9.2.9.IIId; §3.3.1",steps:[
-{title:"Allied khác coalition",story:"Quan hệ Allied giúp đi và đánh cùng quân; nó không khiến bạn thắng cùng họ. Coalition là cách đổi điều kiện thắng bằng một lá Dominance.",rule:"Trong Daylight, có ít nhất 10 VP và game ít nhất 4 người, bạn có thể kích hoạt Dominance để coalition thay điều kiện thắng thường. Chọn người có VP ít nhất trong các người khác bạn, và chưa ở coalition; hòa thấp nhất thì chọn một."},
-{title:"Đặt marker sang bảng phe của họ",story:"Bạn không ghi VP nữa. Nếu người cùng coalition thắng, bạn thắng cùng. Bạn vẫn quản lý item, quest và hành động bình thường để giúp mục tiêu ấy.",rule:"Đặt score marker lên faction board người cùng coalition. Không tự thành Allied; marker quan hệ khác giữ nguyên. Nếu họ đang Hostile, chuyển quan hệ họ về Indifferent. Không dùng điều kiện Dominance thường của các phe để tự thắng."}]},
-{id:"two",title:"Hai lữ khách cùng rừng",ref:"§9.7",steps:[
-{title:"Chung quest, thêm item ruin",story:"Với hai Vagabond, mỗi ruin giấu hai item R, nhưng cả hai cùng dùng ba quest ngửa. Người làm quest trước nhận nó rồi thay bằng quest mới.",rule:"Dùng hai bộ item R; 2 item ngẫu nhiên mỗi ruin. Không mở thêm 3 quest. Standard chọn ngẫu nhiên Vagabond setup trước. Nhân vật phải theo lựa chọn hợp lệ của bộ game/setup."},
-{title:"Mỗi loại R chỉ giữ một",story:"Explore ruin có hai item cho bạn xem và chọn một. Nhưng nếu đã có Kiếm R trên board, không lấy thêm Kiếm R; Kiếm S hoặc Kiếm craft không phải Kiếm R ấy.",rule:"Không lấy item R cùng loại item R đã có trên faction board. Explore hai lần có thể lấy hai item nếu đều hợp lệ; không lấy item thì không có VP nhưng Đuốc vẫn exhaust. Ruin chỉ rời map khi item cuối được lấy."}]},
-{id:"plan",title:"Một lượt có chủ đích",ref:"§9.4–9.6",steps:[
-{title:"Nhìn item trước, chọn đường sau",story:"Trước Birdsong, xem món nào cần refresh. Dùng Slip để tiết kiệm Giày, rồi dành Đuốc cho ruin hoặc skill. Nếu muốn Aid lên mức, đếm trước đủ lá và item trả trong cùng lượt.",rule:"Gợi ý chiến thuật, không phải hành động bắt buộc: lập kế hoạch từ item thật, đúng suit, đúng vị trí. Quest, Aid, Craft hay Battle đều là đường lấy VP; kiểm tra Hostile và sức chứa trước khi kết thúc lượt."},
-{title:"Biết khi nào nên rút vào rừng",story:"Nhiều đồ hỏng có thể làm một lượt trong forest đáng giá. Nhưng vào rồi ra lại sẽ không Rest. Giữ một Búa dùng được thường giúp bạn tránh phải nghỉ cả chuyến.",rule:"Thắng thường ngay khi đạt 30 VP. Coalition thay mục tiêu này. Các mô hình dưới đây dạy từng quy tắc riêng, không mô phỏng toàn bộ trận và không thay luật card/map/hireling cụ thể."}]}
+export const topics:RuleTopic[]=[
+  {
+    "id": "setup",
+    "title": "Chuẩn bị và đặc điểm của pawn",
+    "ref": "§9.2.2; §9.3",
+    "steps": [
+      {
+        "title": "Pawn và quyền cai trị",
+        "rule": "Pawn không phải warrior, không rule và không chặn phe khác rule. Pawn không bị loại khỏi map. Nếu hiệu ứng loại mọi piece địch như Revolt/Bom tác động bạn, damage 3 item thay vì lấy pawn ra."
+      },
+      {
+        "title": "Standard Setup",
+        "rule": "Standard: chọn character, pawn ở một forest bất kỳ, mở 3 quest, mỗi ruin 1 item R; lấy item S đúng character; quan hệ với mọi phe không phải Vagabond ở Indifferent. ADSET theo thẻ riêng; hai Vagabond dùng luật riêng ở cảnh cuối."
+      }
+    ]
+  },
+  {
+    "id": "characters",
+    "title": "Nhân vật và kỹ năng riêng",
+    "ref": "Phụ lục V.1–V.12",
+    "steps": [
+      {
+        "title": "Chọn nhân vật và item khởi đầu",
+        "rule": "Chọn character trước khi lấy item khởi đầu. Đọc đủ item và timing kỹ năng, không dùng kỹ năng Knave Captain cùng tên thay luật Vagabond. Các nút dưới đây là bảng tra cả 12 character, không phải mọi bộ game đều có đủ."
+      },
+      {
+        "title": "Chi phí và thời điểm dùng kỹ năng",
+        "rule": "Special Action dùng đúng item/timing trên thẻ. Một số kỹ năng là hiệu ứng trong battle, không phải hành động Daylight độc lập. Item phải ngửa và lành để exhaust, trừ ngoại lệ nêu rõ."
+      }
+    ]
+  },
+  {
+    "id": "items",
+    "title": "Trạng thái item và các track",
+    "ref": "§9.2.5–9.2.7",
+    "steps": [
+      {
+        "title": "Exhaust và Damage",
+        "rule": "Exhaust: lật item ngửa, lành thành úp. Damage: đưa item lành vào Damaged box, giữ mặt hiện tại. Một item có thể vừa hỏng vừa úp. Item hỏng không thể exhaust để trả hành động."
+      },
+      {
+        "title": "Track Trà, Tiền và Túi",
+        "rule": "Track Trà/Tiền/Túi chỉ chứa item lành, ngửa. Mỗi track tối đa 3. Item dư ngửa ở Satchel vẫn tính sức chứa và không cho bonus track. Satchel và Damaged đều tính sức chứa; item trên track không tính."
+      }
+    ]
+  },
+  {
+    "id": "refresh",
+    "title": "Refresh trong Birdsong",
+    "ref": "§9.4.1",
+    "steps": [
+      {
+        "title": "Ngân sách Refresh",
+        "rule": "Refresh: 2 item úp cho mỗi Trà ngửa trên Refresh track khi bước bắt đầu, rồi thêm 3 item úp. Chọn item cần lật; Trà vừa refresh không tăng ngân sách của bước hiện tại."
+      },
+      {
+        "title": "Refresh và Repair",
+        "rule": "Refresh đổi mặt, không bỏ trạng thái hỏng. Repair đổi trạng thái hỏng, không đổi mặt. Dùng ngân sách refresh cho đồ hỏng có thể hữu ích để chuẩn bị Repair sau đó."
+      }
+    ]
+  },
+  {
+    "id": "slip",
+    "title": "Slip trong Birdsong",
+    "ref": "§9.4.2; §9.2.10",
+    "steps": [
+      {
+        "title": "Move miễn Giày",
+        "rule": "Slip tùy chọn, một move ở Birdsong, không exhaust Giày. Cho phép vào/ra forest theo adjacency. Bỏ mọi hiệu ứng ngăn move ra clearing, ví dụ Snare Quạ."
+      },
+      {
+        "title": "Adjacency và giới hạn của Slip",
+        "rule": "Nimble bỏ yêu cầu rule; Slip bỏ chi phí Giày và hạn chế move ra. Không tự bỏ adjacency hay mọi lệnh cấm move vào. Muốn vào forest bình thường, giữ Slip cho bước này."
+      }
+    ]
+  },
+  {
+    "id": "move",
+    "title": "Move trong Daylight",
+    "ref": "§9.5.1; §9.2.3; §9.2.9.IIIb",
+    "steps": [
+      {
+        "title": "Chi phí Giày và Hostile",
+        "rule": "Move thường: 1 Giày + 1 nếu đích có bất kỳ warrior Hostile. Nhiều phe Hostile cùng đó vẫn chỉ thêm 1. Building/token Hostile không có warrior không làm tăng chi phí."
+      },
+      {
+        "title": "Move giữa clearing và forest",
+        "rule": "Move thường bỏ yêu cầu rule nhờ Nimble, vẫn cần adjacency và đường hợp lệ giữa clearings. Không Move thường vào forest hoặc forest sang forest. Slip mới cho move vào forest; kỹ năng riêng đọc đúng ngoại lệ."
+      }
+    ]
+  },
+  {
+    "id": "explore",
+    "title": "Explore ruin",
+    "ref": "§9.5.3",
+    "steps": [
+      {
+        "title": "Chi phí và phần thưởng",
+        "rule": "Explore tại clearing hiện tại: exhaust 1 Đuốc, lấy 1 item dưới ruin, +1 VP nếu thực sự lấy item. Nếu đó là item cuối, loại ruin để mở slot. Không cần rule và không lấy item từ nguồn craft."
+      },
+      {
+        "title": "Nguồn item R và giới hạn Explore",
+        "rule": "Không nhận VP lần nữa khi chỉ dùng item. Một ruin có 2 item trong game hai Vagabond cần hai Explore để lấy cả hai; chỉ lấy 1 item mỗi action và áp dụng giới hạn item R."
+      }
+    ]
+  },
+  {
+    "id": "aid",
+    "title": "Aid",
+    "ref": "§9.5.4",
+    "steps": [
+      {
+        "title": "Điều kiện và nhận item",
+        "rule": "Aid cần: item ngửa lành bất kỳ + lá matching clearing + đối tượng có piece phe ở cùng clearing. Nhận tối đa 1 item từ Crafted Items box của họ, ngửa; họ không được từ chối hành động hợp lệ."
+      },
+      {
+        "title": "Aid khi không có item hoặc đang Hostile",
+        "rule": "Lấy item là tùy chọn, không phải điều kiện để Aid. Có thể Aid người chơi Hostile; vẫn trả đủ và có thể lấy item, nhưng không cải thiện quan hệ bằng Aid. Không lấy item khởi đầu/ruin từ board Vagabond khác."
+      }
+    ]
+  },
+  {
+    "id": "relationships",
+    "title": "Cải thiện quan hệ",
+    "ref": "§9.2.9.I–IIa",
+    "steps": [
+      {
+        "title": "Số Aid và VP mỗi mức",
+        "rule": "Chi phí theo từng chặng là 1 → 2 → 3 Aid; VP lên mức là +1 → +2 → +2. Một Aid chỉ trả cho một lần cải thiện. Có thể lên nhiều mức trong cùng lượt nếu đủ 6 Aid từ Indifferent."
+      },
+      {
+        "title": "Tiến độ trong lượt và Allied",
+        "rule": "Chỉ tiến độ chưa đủ ngưỡng reset khi hết lượt; mức quan hệ giữ lại. Sau khi đã Allied, mỗi Aid tiếp theo +2 VP. Aid đạt Allied chỉ nhận +2 cho việc lên mức, không cộng thêm +2 lần nữa."
+      }
+    ]
+  },
+  {
+    "id": "allied",
+    "title": "Warrior Allied",
+    "ref": "§9.2.9.IIb–IId",
+    "steps": [
+      {
+        "title": "Di chuyển và tấn công cùng quân",
+        "rule": "Chỉ chọn 1 phe Allied mỗi move/battle. Trần rolled hit khi dùng họ = Kiếm lành + số warrior Allied tham chiến. Không dùng warrior của chính phe bạn đang tấn công. Không mang họ bằng move chỉ cho pawn như Glide."
+      },
+      {
+        "title": "Nhận hit và chuyển Hostile",
+        "rule": "So toàn bộ hit bạn nhận bằng warrior Allied và bằng damage item trong cùng battle. Allied mất nhiều hơn → Hostile cuối battle; bằng nhau thì không. Đây là ngoại lệ riêng, không chuyển Hostile ngay sau warrior Allied đầu tiên."
+      }
+    ]
+  },
+  {
+    "id": "battle",
+    "title": "Battle và nhận hit",
+    "ref": "§9.2.4; §9.2.6–9.2.7; §9.5.2; §4.3",
+    "steps": [
+      {
+        "title": "Kiếm và trần rolled hit",
+        "rule": "Battle tốn 1 Kiếm. Trần rolled hit = tổng Kiếm lành trong Satchel, ngửa hoặc úp, cộng warrior Allied nếu dùng. Extra hit không bị trần này giới hạn. Không có Kiếm ngửa thì không khởi xướng bằng Battle thường."
+      },
+      {
+        "title": "Damage item và Defenseless",
+        "rule": "Khi phòng thủ, không cần exhaust Kiếm. Có Kiếm lành úp vẫn không defenseless; chỉ khi không còn Kiếm lành thì bên tấn công có +1 extra hit defenseless. Ambush và hiệu ứng battle khác vẫn áp dụng."
+      }
+    ]
+  },
+  {
+    "id": "hostile",
+    "title": "Hostile và Infamy",
+    "ref": "§9.2.9.III; §3.2.1",
+    "steps": [
+      {
+        "title": "Chuyển Hostile và tính điểm",
+        "rule": "Infamy = +1 VP mỗi piece Hostile bạn loại trong battle trong lượt của mình, trừ warrior làm họ Hostile. Building/token còn cho +1 cơ bản. Chỉ loại building/token của phe chưa Hostile không tự làm họ Hostile."
+      },
+      {
+        "title": "Phòng thủ, Strike và chi phí Move",
+        "rule": "Infamy cần đủ hai điều: trong battle và trong lượt của bạn. Hostile không về lại thân thiện bằng Aid. Move thường vào clearing có warrior Hostile tốn thêm 1 Giày; Slip không tốn thêm."
+      }
+    ]
+  },
+  {
+    "id": "strike",
+    "title": "Strike bằng Nỏ",
+    "ref": "§9.5.6",
+    "steps": [
+      {
+        "title": "Chọn mục tiêu hợp lệ",
+        "rule": "Strike exhaust 1 Nỏ; không roll, không ambush, không nhận hit phòng thủ. Kiểm tra warrior của chính phe mục tiêu, không phải tất cả quân trên clearing. Không dùng Strike để ưu tiên building khi phe ấy vẫn có warrior."
+      },
+      {
+        "title": "VP và thay đổi quan hệ",
+        "rule": "Strike không phải battle. Loại warrior thường 0 VP; loại building/token +1 VP theo luật chung. Khi loại warrior phe chưa Hostile, đổi quan hệ; skill có ngoại lệ nêu rõ thì theo skill."
+      }
+    ]
+  },
+  {
+    "id": "quest",
+    "title": "Quest",
+    "ref": "§9.5.5",
+    "steps": [
+      {
+        "title": "Suit clearing và item yêu cầu",
+        "rule": "Quest cần đúng suit clearing và đủ 2 item ngửa lành được ghi. Nếu cần 2 cùng loại phải có 2 item riêng. Không spend lá matching để thay item theo luật thường. Skill Adventurer/Cheat là ngoại lệ."
+      },
+      {
+        "title": "Chọn VP hoặc rút bài",
+        "rule": "Chọn +VP bằng số quest đã hoàn thành cùng suit, tính cả quest mới, HOẶC rút 2 lá, không cả hai. Sau đó rút quest mới thay chỗ. Quest suit khác không góp vào số điểm lần này; Cheat đưa quest Con trở lại deck."
+      }
+    ]
+  },
+  {
+    "id": "craft",
+    "title": "Craft bằng Búa",
+    "ref": "§9.2.1; §9.5.8; §4.1",
+    "steps": [
+      {
+        "title": "Trả crafting icons",
+        "rule": "Craft theo crafting icons, không theo suit lá bài. Exhaust 1 Búa mỗi icon; clearing hiện tại phải matching tất cả icon. Búa cho kích hoạt pawn nhiều lần, bỏ giới hạn 1 lần/piece; không tự cho cùng Búa exhaust nhiều lần."
+      },
+      {
+        "title": "Nhận item và xử lý hiệu ứng",
+        "rule": "Cost gồm nhiều suit khác nhau thường không trả được tại một clearing thường. Không craft item đã hết nguồn. Không chia một lần craft qua nhiều clearing. Có thể di chuyển rồi craft lá khác nếu còn item trả hành động."
+      }
+    ]
+  },
+  {
+    "id": "repair",
+    "title": "Repair và Rest",
+    "ref": "§9.5.7; §9.6.1",
+    "steps": [
+      {
+        "title": "Repair giữ nguyên mặt item",
+        "rule": "Repair exhaust 1 Búa, sửa đúng 1 item, giữ mặt. Item Trà/Tiền/Túi được sửa ngửa về track nếu còn chỗ. Búa hỏng không thể tự dùng để sửa chính nó."
+      },
+      {
+        "title": "Rest ở đầu Evening",
+        "rule": "Rest chỉ khi ở forest, vào đầu Evening. Chỉ các item trong Damaged box được sửa và lật ngửa, không refresh toàn bộ đồ lành. Slip vào forest rồi Move ra clearing trong Daylight sẽ mất Rest tối đó."
+      }
+    ]
+  },
+  {
+    "id": "evening",
+    "title": "Evening và sức chứa",
+    "ref": "§9.6",
+    "steps": [
+      {
+        "title": "Thứ tự Evening",
+        "rule": "Evening đúng thứ tự Rest → Draw 1 + Tiền track → discard tay xuống 5 → Check Item Capacity. Tiền hỏng/úp/ngoài track không cho bonus. Không tự nhận VP mỗi Evening."
+      },
+      {
+        "title": "Giới hạn và bỏ item",
+        "rule": "Giới hạn = 6 + 2 mỗi Túi ngửa trên track. Đếm item trong Satchel + Damaged. Dư item cuối Evening phải chọn bỏ vĩnh viễn từ hai khu đó; không đưa lại nguồn craft, không chỉ discard tạm. Không kiểm tra giới hạn ngay sau từng action."
+      }
+    ]
+  },
+  {
+    "id": "coalition",
+    "title": "Coalition bằng Dominance",
+    "ref": "§9.2.8; §9.2.9.IIId; §3.3.1",
+    "steps": [
+      {
+        "title": "Điều kiện kích hoạt",
+        "rule": "Trong Daylight, có ít nhất 10 VP và game ít nhất 4 người, bạn có thể kích hoạt Dominance để coalition thay điều kiện thắng thường. Chọn người có VP ít nhất trong các người khác bạn, và chưa ở coalition; hòa thấp nhất thì chọn một."
+      },
+      {
+        "title": "Quan hệ và chiến thắng chung",
+        "rule": "Đặt score marker lên faction board người cùng coalition. Không tự thành Allied; marker quan hệ khác giữ nguyên. Nếu họ đang Hostile, chuyển quan hệ họ về Indifferent. Không dùng điều kiện Dominance thường của các phe để tự thắng."
+      }
+    ]
+  },
+  {
+    "id": "two",
+    "title": "Hai Vagabond",
+    "ref": "§9.7",
+    "steps": [
+      {
+        "title": "Quest và ruin dùng chung",
+        "rule": "Dùng hai bộ item R; 2 item ngẫu nhiên mỗi ruin. Không mở thêm 3 quest. Standard chọn ngẫu nhiên Vagabond setup trước. Nhân vật phải theo lựa chọn hợp lệ của bộ game/setup."
+      },
+      {
+        "title": "Giới hạn mỗi loại item R",
+        "rule": "Không lấy item R cùng loại item R đã có trên faction board. Explore hai lần có thể lấy hai item nếu đều hợp lệ; không lấy item thì không có VP nhưng Đuốc vẫn exhaust. Ruin chỉ rời map khi item cuối được lấy."
+      }
+    ]
+  },
+  {
+    "id": "plan",
+    "title": "Trình tự lượt và chiến thắng",
+    "ref": "§9.4–9.6",
+    "steps": [
+      {
+        "title": "Birdsong, Daylight và Evening",
+        "rule": "Birdsong: Refresh rồi có thể Slip một lần. Daylight: thực hiện Move, Battle, Explore, Aid, Quest, Strike, Repair, Craft và kỹ năng riêng theo thứ tự tùy chọn, trả đủ chi phí mỗi lần. Evening: Rest nếu ở forest, rút bài, bỏ tay xuống 5, rồi kiểm tra sức chứa."
+      },
+      {
+        "title": "Đạt 30 VP hoặc thắng cùng coalition",
+        "rule": "Thắng theo cách thông thường ngay khi đạt 30 VP. Coalition thay mục tiêu này bằng chiến thắng chung với người cùng coalition. Các ví dụ tương tác là tình huống độc lập, không mô phỏng toàn bộ trận; áp dụng luật card, map, hireling và nhân vật cụ thể khi có."
+      }
+    ]
+  }
 ];

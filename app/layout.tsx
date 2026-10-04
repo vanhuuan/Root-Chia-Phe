@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-const origin = "https://root-woodland-table.andeptrai89.chatgpt.site";
+const origin = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const metadata: Metadata = {
   title: "Root • Phòng chia phe",
   description: "Tạo phòng, mời bạn bè bằng QR và random faction Root cân bằng theo Reach.",

@@ -44,3 +44,11 @@ next-env.d.ts
 /.codex/
 /outputs/
 /work/
+
+!.env.example
+*.tsbuildinfo
+/test-results/
+/playwright-report/
+/artifacts/
+/.pnpm-store/
+artifacts-*.log

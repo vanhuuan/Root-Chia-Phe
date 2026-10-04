@@ -1,18 +1,38 @@
 "use client";
-import {useEffect,useState} from "react";
-import {law,scenes,faqs} from "./story";
-import {SceneLab} from "./labs";
+
+import RuleBook from "../../rule-book";
+import { law, topics, faqs } from "./story";
+import { SceneLab } from "./labs";
 import "../../adventure.css";
 import "./lizard.css";
-export default function LizardAdventure(){const [index,setIndex]=useState(0),[step,setStep]=useState(0),[playing,setPlaying]=useState(false),[reduced,setReduced]=useState(false);const scene=scenes[index],current=scene.steps[step],last=step===scene.steps.length-1;
-useEffect(()=>{const media=matchMedia("(prefers-reduced-motion: reduce)");const update=()=>{setReduced(media.matches);if(media.matches)setPlaying(false)};update();media.addEventListener("change",update);return()=>media.removeEventListener("change",update)},[]);
-useEffect(()=>{if(!playing||last)return;const timer=setTimeout(()=>setStep(s=>s+1),12000);return()=>clearTimeout(timer)},[playing,last,index,step]);useEffect(()=>{if(last)setPlaying(false)},[last]);
-function open(i:number){setIndex(i);setStep(0);setPlaying(false)}
-return <section className={`adventure lizard-adventure ${reduced?"reduce-motion":""}`} aria-label="Câu chuyện luật Giáo phái Thằn Lằn"><div className="adventure-top"><div><span className="eyebrow">LIZARD CULT · CHUYỆN CỦA GIÁO PHÁI</span><h1>Niềm tin bén rễ trong khu rừng.</h1><p>Gieo vườn, giữ bài và biến Tín đồ thành sức mạnh vào bình minh.</p><div className="lizard-jump"><a href="#lizard-reference">Tờ nhắc tại bàn</a><a href="#lizard-faq">Luật dễ nhầm</a></div></div><img className="lizard-portrait" src="/assets/lizard-cult-portrait.webp" alt="Giáo phái Thằn Lằn"/></div>
-<nav className="scene-selector" aria-label="Chọn cảnh Giáo phái Thằn Lằn">{scenes.map((s,i)=><button key={s.id} className={i===index?"active":""} aria-current={i===index?"step":undefined} onClick={()=>open(i)}><small>{String(i+1).padStart(2,"0")}</small>{s.title}</button>)}</nav>
-<div className="adventure-spread"><div className="adventure-visual"><div className="visual-heading"><span>CẢNH {index+1}/{scenes.length}</span><b>{scene.title}</b><label><input type="checkbox" checked={reduced} onChange={e=>{setReduced(e.target.checked);if(e.target.checked)setPlaying(false)}}/> Giảm chuyển động</label></div><div className="lizard-worktable" key={scene.id}>
-<SceneLab id={scene.id}/>
-<div className="lizard-model-label">Mô hình học từng luật · các bài tập ở các cảnh độc lập</div></div></div>
-<div className="adventure-narrative"><span className="eyebrow">{scene.title}</span><div className="step-dots" aria-label="Bước trong cảnh">{scene.steps.map((s,i)=><button key={s.title} className={i===step?"current":""} aria-current={i===step?"step":undefined} aria-label={`Bước ${i+1}: ${s.title}`} onClick={()=>{setStep(i);setPlaying(false)}}>{i+1}</button>)}</div><div className="narration" key={`${scene.id}-${step}`} aria-live="polite"><h2>{current.title}</h2><p>{current.story}</p></div><aside className="scene-rule"><b>Luật cần nhớ</b><p>{current.rule}</p><a href={law} target="_blank" rel="noreferrer">Law of Root · {scene.ref}</a></aside><div className="story-playback"><button disabled={last||reduced} onClick={()=>setPlaying(p=>!p)}>{playing?"Tạm dừng":"Tự phát"}</button><button onClick={()=>{setStep(0);setPlaying(!reduced)}}>Đọc lại cảnh</button><button disabled={last} onClick={()=>{setStep(scene.steps.length-1);setPlaying(false)}}>Đến cuối cảnh</button></div><div className="story-navigation"><button className="ghost" disabled={index===0&&step===0} onClick={()=>{setPlaying(false);if(step>0)setStep(s=>s-1);else open(index-1)}}>Quay lại</button><button className="primary" disabled={last&&index===scenes.length-1} onClick={()=>{setPlaying(false);if(last)open(index+1);else setStep(s=>s+1)}}>{last?index===scenes.length-1?"Đã hết câu chuyện":"Sang cảnh tiếp":"Tiếp tục câu chuyện"}</button></div><small className="story-example-note">Standard Setup; tự phát 12 giây mỗi bước, dừng cuối cảnh. Luật card, map và hireling cụ thể vẫn áp dụng; các mô hình chưa mô phỏng toàn bộ trận.</small></div></div>
-<section id="lizard-reference" className="lizard-reference"><span className="eyebrow">TRA NHANH KHI CHƠI</span><h2>Một lượt Giáo phái Thằn Lằn</h2><div className="lizard-reference-grid"><div><h3>Birdsong</h3><ol><li>Chỉnh Outcast; bỏ qua Chim.</li><li>Dọn Lost Souls sang discard.</li><li>Spend tín đồ làm conspiracies.</li></ol></div><div><h3>Daylight</h3><ul><li>Reveal đúng chất: Build / Recruit.</li><li>Score: spend lá reveal, tối đa 1 lần mỗi chất.</li><li>Reveal Chim: Sacrifice từ nguồn.</li></ul></div><div><h3>Evening</h3><ol><li>Lấy các lá reveal còn lại về tay.</li><li>Craft bằng garden có chất in matching Outcast.</li><li>Rút 1 + bonus đang lộ; discard xuống 5.</li></ol></div></div><div className="lizard-table-scroll"><table><caption>Chi phí Tín đồ · mỗi lần thực hiện</caption><thead><tr><th>Conspiracy</th><th>Outcast</th><th>Hated</th><th>Tác dụng</th></tr></thead><tbody><tr><th>Crusade</th><td>2</td><td>1</td><td>Battle tại Outcast hoặc Move từ Outcast, rồi tùy chọn Battle tại đích.</td></tr><tr><th>Convert</th><td>2</td><td>1</td><td>Thay 1 enemy warrior tại Outcast bằng warrior Giáo phái.</td></tr><tr><th>Sanctify</th><td>3</td><td>2</td><td>Thay 1 enemy building tại Outcast bằng garden chất Outcast.</td></tr></tbody></table></div><p>Convert/Sanctify cần thay thế được đầy đủ. Crusade vẫn theo luật Move/Battle. Không có action Move/Battle mặc định ở Daylight.</p><a href={law} target="_blank" rel="noreferrer">Luật chính thức Leder Games · phần 10: Lizard Cult</a><p className="lizard-note">Diễn giải tiếng Việt theo Law of Root, phần 10; đối chiếu Rules Library của Leder Games. Artwork phe có sẵn từ Leder Games / Kyle Ferrin. Các mô hình chỉ minh họa từng luật, không mô phỏng toàn bộ trận. Luật card, map và setup riêng vẫn áp dụng.</p></section>
-<section id="lizard-faq" className="lizard-faq"><span className="eyebrow">GỠ NHỮNG CHỖ DỄ NHẦM</span><h2>Hỏi nhanh tại bàn</h2>{faqs.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}<a href="/rules" className="rules-nav-link">Ôn lại luật cơ bản</a></section></section>}
+
+export default function LizardAdventure() {
+  return <div className="lizard-adventure"><RuleBook
+    id="lizard"
+    name="Giáo phái Thằn Lằn — Lizard Cult"
+    subtitle="LUẬT PHE"
+    description="Tra cứu setup, vườn, Lost Souls, Outcast, tín đồ, nghi lễ và thứ tự lượt. Các ví dụ tương tác độc lập minh họa từng luật."
+    portrait="/assets/lizard-cult-portrait.webp"
+    law={law}
+    topics={topics}
+    renderExample={topic => <div className="lizard-worktable"><SceneLab id={topic.id}/><p className="lizard-model-label">Ví dụ học luật độc lập; không mô phỏng toàn bộ trận.</p></div>}
+  >
+    <section id="lizard-reference" className="lizard-reference">
+      <h2>Thứ tự một lượt</h2>
+      <div className="lizard-reference-grid">
+        <div><h3>Birdsong — Bình minh</h3><ol><li>Chỉnh Outcast từ Lost Souls; bỏ qua Chim.</li><li>Dọn Lost Souls sang discard.</li><li>Trả tín đồ để làm conspiracies.</li></ol></div>
+        <div><h3>Daylight — Ban ngày</h3><ul><li>Reveal đúng chất: Build hoặc Recruit.</li><li>Score: spend lá reveal, tối đa một lần mỗi chất.</li><li>Reveal Chim: Sacrifice từ nguồn.</li></ul></div>
+        <div><h3>Evening — Buổi tối</h3><ol><li>Lấy các lá reveal còn lại về tay.</li><li>Craft bằng vườn có chất in matching Outcast.</li><li>Rút 1 cộng bonus đang lộ; discard xuống 5.</li></ol></div>
+      </div>
+      <div className="lizard-table-scroll"><table><caption>Chi phí Tín đồ cho mỗi conspiracy</caption><thead><tr><th>Conspiracy</th><th>Outcast</th><th>Hated</th><th>Tác dụng</th></tr></thead><tbody>
+        <tr><th>Crusade</th><td>2</td><td>1</td><td>Battle tại Outcast hoặc Move từ Outcast, rồi tùy chọn Battle tại đích.</td></tr>
+        <tr><th>Convert</th><td>2</td><td>1</td><td>Thay 1 chiến binh địch tại Outcast bằng chiến binh Giáo phái.</td></tr>
+        <tr><th>Sanctify</th><td>3</td><td>2</td><td>Thay 1 building địch tại Outcast bằng vườn chất Outcast.</td></tr>
+      </tbody></table></div>
+      <p>Convert và Sanctify cần thay thế được đầy đủ. Crusade vẫn theo luật Move và Battle. Không có hành động Move hoặc Battle mặc định ở Daylight.</p>
+      <a href={law} target="_blank" rel="noreferrer">Luật chính thức Leder Games · phần 10: Lizard Cult</a>
+      <p className="lizard-note">Diễn giải tiếng Việt theo Law of Root, phần 10. Artwork phe có sẵn từ Leder Games / Kyle Ferrin. Luật bài, map và setup riêng vẫn áp dụng; các mô hình chỉ minh họa từng luật.</p>
+    </section>
+    <section id="lizard-faq" className="lizard-faq"><h2>Luật dễ nhầm</h2>{faqs.map(([q,a]) => <article key={q}><h3>{q}</h3><p>{a}</p></article>)}<a href="/rules" className="rules-nav-link">Ôn lại luật cơ bản</a></section>
+  </RuleBook></div>;
+}

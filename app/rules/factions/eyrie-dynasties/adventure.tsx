@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
+import RuleBook, {type RuleTopic} from "../../rule-book";
 import {storyScenes,leaders,columns,viziersFor,canAdd,turmoilLoss,roostPoints,type LeaderId,type Suit,type Column,type DecreeCard} from "./story";
 import "../../adventure.css";
 import "./eyrie.css";
@@ -14,20 +15,119 @@ function MapScene({id,step,choice}:{id:string;step:number;choice:string}){const 
 <div className="eyrie-map-note">{move?<><SuitIcon suit={step===0?"fox":"rabbit"}/>{step===0?"Move Cáo: A → B":"Move Thỏ: B → A"}<span>Ví dụ cả A và B đều do Đại bàng rule.</span></>:<>Build Thỏ tại B<br/>{choice==="legal"?"Rule + slot trống + chưa có roost":"Thiếu điều kiện → không Build được"}</>}</div></>}
 <span className="map-art-label">Autumn · {setup?"chỉ minh họa piece Eyrie":"A/B là nhãn ví dụ"}</span></div>}
 const starterHand:Suit[]=["bird","fox","rabbit","mouse","bird"];
-export default function EyrieAdventure(){const [sceneIndex,setSceneIndex]=useState(0),[step,setStep]=useState(0),[playing,setPlaying]=useState(false),[reduced,setReduced]=useState(false),[paused,setPaused]=useState(false),[leader,setLeader]=useState<LeaderId>("despot"),[newLeader,setNewLeader]=useState<LeaderId>("builder"),[added,setAdded]=useState<(DecreeCard&{handIndex:number})[]>([]),[column,setColumn]=useState<Column>("Build"),[feedback,setFeedback]=useState(""),[enemy,setEnemy]=useState(3),[buildChoice,setBuildChoice]=useState("legal"),[birds,setBirds]=useState(1),[roosts,setRoosts]=useState(3),[resolveIndex,setResolveIndex]=useState(0);
-const scene=storyScenes[sceneIndex],current=scene.steps[step],last=step===scene.steps.length-1;
+
+const topicTitles: [string, string[]][] = [
+  [
+    "Chuẩn bị phe",
+    [
+      "Đặt quân và roost ban đầu",
+      "Chọn thủ lĩnh và Loyal Viziers",
+      "Standard Setup và ADSET"
+    ]
+  ],
+  [
+    "Thủ lĩnh và năng lực",
+    [
+      "Cột Loyal Vizier của từng thủ lĩnh",
+      "Hiệu ứng Charismatic, Commander và Despot"
+    ]
+  ],
+  [
+    "Quyền cai trị khi hòa",
+    [
+      "Lords of the Forest",
+      "Cách đếm quân và công trình"
+    ]
+  ],
+  [
+    "Birdsong: bổ sung Decree",
+    [
+      "Rút bài khi tay rỗng; thêm 1–2 lá",
+      "Tối đa một lá Chim mới",
+      "Giữ Decree qua các lượt"
+    ]
+  ],
+  [
+    "Birdsong: A New Roost",
+    [
+      "Hồi phục khi không còn roost",
+      "Điều kiện đặt roost và quân"
+    ]
+  ],
+  [
+    "Daylight: chế tạo",
+    [
+      "Kích hoạt roost để craft",
+      "Disdain for Trade và Builder"
+    ]
+  ],
+  [
+    "Daylight: thực hiện Decree",
+    [
+      "Thứ tự bốn cột và từng lá",
+      "Suit yêu cầu của mỗi hành động"
+    ]
+  ],
+  [
+    "Recruit: tuyển quân",
+    [
+      "Một hành động tại một roost",
+      "Thiếu quân hoặc roost matching"
+    ]
+  ],
+  [
+    "Move: di chuyển",
+    [
+      "Suit của nơi xuất phát",
+      "Dùng lại quân và đổi thứ tự trong cột"
+    ]
+  ],
+  [
+    "Battle: giao chiến",
+    [
+      "Điều kiện hoàn thành Battle",
+      "Điểm thưởng Despot và hit của Commander"
+    ]
+  ],
+  [
+    "Build: xây roost",
+    [
+      "Điều kiện xây và cách lấy roost",
+      "Thiếu chỗ xây hoặc hết nguồn"
+    ]
+  ],
+  [
+    "Turmoil: xử lý thất bại",
+    [
+      "Kích hoạt Turmoil",
+      "Humiliate và Purge",
+      "Depose: thay thủ lĩnh",
+      "Rest: kết thúc Daylight"
+    ]
+  ],
+  [
+    "Evening: điểm và bài",
+    [
+      "Điểm theo track Roosts",
+      "Rút bài và giới hạn tay"
+    ]
+  ]
+];
+const topics: RuleTopic[] = storyScenes.map((scene, index) => ({ id: scene.id, title: topicTitles[index][0], ref: scene.reference, steps: scene.steps.map((step, stepIndex) => ({ title: topicTitles[index][1][stepIndex], rule: step.rule.replace("như các cảnh sau", "như các mục bên dưới") })) }));
+function EyrieExample({id}:{id:string}) {
+const [reduced,setReduced]=useState(false),[leader,setLeader]=useState<LeaderId>("despot"),[newLeader,setNewLeader]=useState<LeaderId>("builder"),[added,setAdded]=useState<(DecreeCard&{handIndex:number})[]>([]),[column,setColumn]=useState<Column>("Build"),[feedback,setFeedback]=useState(""),[enemy,setEnemy]=useState(3),[buildChoice,setBuildChoice]=useState("legal"),[birds,setBirds]=useState(1),[roosts,setRoosts]=useState(3),[resolveIndex,setResolveIndex]=useState(0);
+const scene={id};
 const decree=[...viziersFor(leader),...added];const turmoilCards:DecreeCard[]=[...viziersFor("despot"),...Array.from({length:birds},()=>({suit:"bird" as Suit,column:"Battle" as Column})),{suit:"fox",column:"Recruit"},{suit:"rabbit",column:"Build"}];
 const exampleDecree:DecreeCard[]=[{suit:"bird",column:"Recruit",vizier:true},{suit:"fox",column:"Move"},{suit:"rabbit",column:"Move"},{suit:"bird",column:"Battle",vizier:true},{suit:"mouse",column:"Build"}];
-useEffect(()=>{const media=matchMedia("(prefers-reduced-motion: reduce)");const update=()=>{setReduced(media.matches);if(media.matches)setPlaying(false)};update();media.addEventListener("change",update);return()=>media.removeEventListener("change",update)},[]);
-useEffect(()=>{if(!playing||last)return;const timer=setTimeout(()=>setStep(s=>s+1),12000);return()=>clearTimeout(timer)},[playing,last,step,sceneIndex]);useEffect(()=>{if(last)setPlaying(false)},[last]);
-function reset(){setPaused(false);setAdded([]);setFeedback("");setEnemy(3);setBuildChoice("legal");setBirds(1);setRoosts(3);setResolveIndex(0);setNewLeader("builder")}
-function open(i:number){setSceneIndex(i);setStep(0);setPlaying(false);reset()}
-function next(){setPlaying(false);setPaused(false);if(last){if(sceneIndex<storyScenes.length-1)open(sceneIndex+1)}else setStep(s=>s+1)}
-function previous(){setPlaying(false);setPaused(false);if(step>0)setStep(s=>s-1);else if(sceneIndex>0)open(sceneIndex-1)}
+
+useEffect(()=>{const media=matchMedia("(prefers-reduced-motion: reduce)");const update=()=>setReduced(media.matches);update();media.addEventListener("change",update);return()=>media.removeEventListener("change",update)},[]);
+function reset(){setLeader("despot");setNewLeader("builder");setAdded([]);setColumn("Build");setFeedback("");setEnemy(3);setBuildChoice("legal");setBirds(1);setRoosts(3);setResolveIndex(0)}
 function addCard(handIndex:number){const suit=starterHand[handIndex];if(added.some(c=>c.handIndex===handIndex))return;if(!canAdd(added,suit)){setFeedback(added.length>=2?"Lượt này đã thêm 2 lá. Đợi Birdsong lượt sau mới thêm tiếp.":"Không thể thêm Chim thứ hai trong cùng Birdsong. Bạn có thể thêm một lá Cáo, Thỏ hoặc Chuột.");return;}setAdded(a=>[...a,{suit,column,handIndex}]);setFeedback(`Đã thêm ${suitName[suit]} vào ${column}. Lượt sau lá này vẫn ở đó.`)}
-return <section className={`adventure eyrie-adventure ${playing?"is-playing":"is-paused"} ${paused?"motion-paused":""} ${reduced?"reduce-motion":""}`} aria-label="Câu chuyện luật Triều đại Đại bàng"><div className="adventure-top"><div><span className="eyebrow">EYRIE DYNASTIES · CHUYỆN CỦA ĐẠI BÀNG</span><h1>Những lời hứa trên ngai.</h1><p>Một triều đại lớn lên bằng roost — và sống cùng những mệnh lệnh phải giữ.</p></div><img className="eyrie-portrait" src="/assets/eyrie-dynasties-portrait.webp" alt="Triều đại Đại bàng"/></div>
-<nav className="scene-selector" aria-label="Chọn cảnh Đại bàng">{storyScenes.map((s,i)=><button key={s.id} className={i===sceneIndex?"active":""} aria-current={i===sceneIndex?"step":undefined} onClick={()=>open(i)}><small>{String(i+1).padStart(2,"0")}</small>{s.title}</button>)}</nav>
-<div className="adventure-spread"><div className="adventure-visual"><div className="visual-heading"><span>CẢNH {sceneIndex+1}/{storyScenes.length}</span><b>{scene.title}</b><label><input type="checkbox" checked={reduced} onChange={e=>{setReduced(e.target.checked);if(e.target.checked)setPlaying(false)}}/> Giảm chuyển động</label></div><div className={`story-stage eyrie-stage stage-${scene.id}`} key={`${scene.id}-${step}`}>
+const variants=id==="turmoil"?[0,1,2,3]:["move","recruit","battle"].includes(id)?[0,1]:[id==="setup"?0:1];
+return <div className={`eyrie-adventure eyrie-example ${reduced?"reduce-motion":""}`}>
+<div className="eyrie-controls"><button onClick={reset}>Đặt lại ví dụ</button><label><input type="checkbox" checked={reduced} onChange={e=>setReduced(e.target.checked)}/> Giảm chuyển động</label></div>
+{id==="birdsong"&&<label className="eyrie-controls">Thủ lĩnh trong ví dụ <select value={leader} onChange={e=>setLeader(e.target.value as LeaderId)}>{leaders.map(l=><option key={l.id} value={l.id}>{l.name}</option>)}</select></label>}
+{variants.map(step=><div className={`story-stage eyrie-stage stage-${id}`} key={step}>
 {["setup","move","build"].includes(scene.id)?<MapScene id={scene.id} step={step} choice={buildChoice}/>:
 scene.id==="leaders"?<div className="eyrie-worktable"><LeaderSelect value={leader} onChange={setLeader}/><Decree cards={viziersFor(leader)}/></div>:
 scene.id==="rule"?<div className="eyrie-worktable"><h3>Clearing Thỏ · so từng phe</h3><div className="eyrie-armies"><div><b>Đại bàng</b><Pieces n={2}/><Pieces kind="roost"/><strong>2 + 1 = 3</strong></div><div><b>Mèo</b><Pieces kind="enemy" n={enemy}/><strong>{enemy} + 0 = {enemy}</strong></div></div><div className="eyrie-result">{enemy<=3?enemy===3?"Hòa 3–3 · Đại bàng rule":"Đại bàng có tổng lớn hơn · rule":"Mèo có tổng lớn hơn · Đại bàng không rule"}</div>{step===1&&<div className="eyrie-controls"><button disabled={enemy===0} onClick={()=>setEnemy(n=>n-1)} aria-label="Bớt quân Mèo">−</button><b>{enemy} quân Mèo</b><button disabled={enemy===5} onClick={()=>setEnemy(n=>n+1)} aria-label="Thêm quân Mèo">+</button></div>}</div>:
@@ -37,11 +137,14 @@ scene.id==="craft"?<div className="eyrie-worktable"><div className="eyrie-craft"
 scene.id==="decree"?<div className="eyrie-worktable"><Decree cards={exampleDecree} activeColumn={columns[resolveIndex]}/><div className="decree-resolve"><b>Đang đọc: {columns[resolveIndex]}</b><span>{resolveIndex===1?"Cáo và Thỏ: có thể đổi thứ tự trong Move.":"Làm hết mọi lá trong cột này rồi mới qua cột kế."}</span><button disabled={resolveIndex===3} onClick={()=>setResolveIndex(i=>i+1)}>Đã làm hết cột · sang cột kế</button><button className="ghost" onClick={()=>setResolveIndex(0)}>Đọc lại từ Recruit</button></div><small>Đây là minh họa thứ tự, không xác nhận các hành động trên bàn của bạn.</small></div>:
 scene.id==="recruit"?<div className="eyrie-worktable"><h3>Recruit Thỏ · một roost bạn chọn</h3><div className="recruit-example"><div><SuitIcon suit="rabbit"/><Pieces kind="roost"/><b>Roost Thỏ</b></div><span>Đặt</span><div className={step===1?"recruit-shortage":"recruit-arrives"}><Pieces n={step===1?1:leader==="charismatic"?2:1}/><b>{step===1?"Nguồn chỉ còn 1 quân":leader==="charismatic"?"Charismatic: 2 quân":"Leader thường: 1 quân"}</b></div></div>{step===0?<div className="eyrie-controls"><button onClick={()=>setLeader("charismatic")} aria-pressed={leader==="charismatic"}>Charismatic</button><button onClick={()=>setLeader("despot")} aria-pressed={leader!=="charismatic"}>Leader thường</button></div>:<div className="eyrie-warning">Ví dụ Charismatic: đặt quân cuối → thiếu quân thứ hai → Turmoil</div>}</div>:
 scene.id==="battle"?<div className="eyrie-worktable"><div className="battle-lesson"><Pieces n={2}/><b>{step===0?"Battle Thỏ hợp lệ":"Despot · loại 2 building trong 1 battle"}</b><SuitIcon suit="rabbit"/>{step===0?<><Pieces kind="enemy"/><span>Roll 0–0 vẫn hoàn thành Battle.</span></>:<><div className="enemy-buildings"><img src="/assets/rules/cat-sawmill.png" alt="Sawmill địch bị loại"/><img src="/assets/rules/building.png" alt="Workshop địch bị loại"/></div><strong>2 VP cơ bản + 1 VP thưởng = 3</strong></>}</div><p>{step===0?"Cần đối thủ để khởi xướng; không có mục tiêu hợp lệ → Turmoil.":"Commander: +1 hit chỉ khi tấn công, không phải +1 VP."}</p></div>:
-scene.id==="turmoil"?<div className="eyrie-worktable"><div className="turmoil-heading"><span>{["THẤT HỨA","HUMILIATE + PURGE","DEPOSE","REST → EVENING"][step]}</span><h3>{step===0?"Battle không có đối thủ matching":step===1?"Chim linh hoạt, phạt cũng lớn":step===2?"Despot bị phế truất":"Roost vẫn còn, điểm vẫn đến"}</h3></div>{step<2?<><Decree cards={turmoilCards} activeColumn={step===0?"Battle":undefined} purged={step===1}/>{step===1&&<><label className="eyrie-controls">Chim thường trong Decree <input type="range" min="0" max="4" value={birds} onChange={e=>setBirds(Number(e.target.value))}/><b>{birds}</b></label><div className="eyrie-warning">12 VP − ({birds} Chim + 2 Vizier) = {12-turmoilLoss(turmoilCards,12)} VP</div><small>Bỏ lá thường; giữ 2 Vizier để chuyển sang leader mới.</small></>}</>:step===2?<><LeaderSelect value={newLeader} onChange={setNewLeader} exclude="despot"/><Decree cards={viziersFor(newLeader)}/><small>Ví dụ còn 3 leader ngửa, nên chưa thể chọn lại Despot.</small></>:<><Pieces kind="roost" n={3}/><div className="eyrie-evening-score">{12-turmoilLoss(turmoilCards,12)} VP sau phạt + 3 VP từ roost = {15-turmoilLoss(turmoilCards,12)} VP</div><Decree cards={viziersFor(newLeader)}/><p>Không giải nốt lệnh cũ · tiếp tục rút bài và bỏ xuống 5.</p></>}</div>:
+scene.id==="turmoil"?<div className="eyrie-worktable"><div className="turmoil-heading"><span>{["KHÔNG HOÀN THÀNH DECREE","HUMILIATE + PURGE","DEPOSE","REST → EVENING"][step]}</span><h3>{step===0?"Battle không có đối thủ matching":step===1?"Tính phạt Chim và bỏ Decree":step===2?"Despot bị phế truất":"Evening sau Turmoil"}</h3></div>{step<2?<><Decree cards={turmoilCards} activeColumn={step===0?"Battle":undefined} purged={step===1}/>{step===1&&<><label className="eyrie-controls">Chim thường trong Decree <input type="range" min="0" max="4" value={birds} onChange={e=>setBirds(Number(e.target.value))}/><b>{birds}</b></label><div className="eyrie-warning">12 VP − ({birds} Chim + 2 Vizier) = {12-turmoilLoss(turmoilCards,12)} VP</div><small>Bỏ lá thường; giữ 2 Vizier để chuyển sang leader mới.</small></>}</>:step===2?<><LeaderSelect value={newLeader} onChange={setNewLeader} exclude="despot"/><Decree cards={viziersFor(newLeader)}/><small>Ví dụ còn 3 leader ngửa, nên chưa thể chọn lại Despot.</small></>:<><Pieces kind="roost" n={3}/><div className="eyrie-evening-score">{12-turmoilLoss(turmoilCards,12)} VP sau phạt + 3 VP từ roost = {15-turmoilLoss(turmoilCards,12)} VP</div><Decree cards={viziersFor(newLeader)}/><p>Không giải nốt lệnh cũ · tiếp tục rút bài và bỏ xuống 5.</p></>}</div>:
 <div className="eyrie-worktable"><h3>Roost còn trên map → VP mỗi Evening</h3><div className="roost-scoring-track">{roostPoints.map((vp,n)=><button key={n} className={roosts===n?"selected":""} onClick={()=>setRoosts(n)} aria-pressed={roosts===n}><small>{n} roost</small><b>{vp} VP</b></button>)}</div><Pieces kind="roost" n={roosts}/><div className="eyrie-evening-score">Evening này: +{roostPoints[roosts]} VP</div>{step===1&&<div className="draw-evening"><b>Ghi VP</b><span>rồi</span><b>Rút 1 + bonus đã lộ</b><span>rồi</span><b>Bỏ xuống 5 lá</b></div>}<small>Track số là sơ đồ minh họa; bonus rút bài đọc trên bảng phe thật.</small></div>}
-</div>
+</div>)}
 {scene.id==="build"&&<div className="scene-interaction"><span>Clearing B · Đại bàng rule:</span>{[{id:"legal",name:"Slot trống, chưa có roost"},{id:"roost",name:"Đã có roost"},{id:"slot",name:"Không còn slot"}].map(c=><button key={c.id} className={buildChoice===c.id?"chosen":""} onClick={()=>setBuildChoice(c.id)}>{c.name}</button>)}</div>}
-<div className="interaction-feedback" role="status">{scene.id==="birdsong"?feedback:scene.id==="build"?(buildChoice==="legal"?"Nếu còn roost trên track và không có hạn chế đặt piece khác, Build Thỏ tại B hợp lệ.":"Không thể hoàn thành lá Build Thỏ tại B. Nếu không có clearing Thỏ khác hợp lệ, Turmoil ngay khi đến lá này."):""}</div></div>
-<div className="adventure-narrative"><span className="eyebrow">{scene.title}</span><div className="step-dots" aria-label="Bước trong cảnh">{scene.steps.map((s,i)=><button key={s.title} className={i===step?"current":""} aria-current={i===step?"step":undefined} aria-label={`Bước ${i+1}: ${s.title}`} onClick={()=>{setStep(i);setPlaying(false);setPaused(false)}}>{i+1}</button>)}</div><div className="narration" key={`${scene.id}-${step}`} aria-live="polite"><h2>{current.title}</h2><p>{current.story}</p></div><aside className="scene-rule"><b>Luật cần nhớ</b><p>{current.rule}</p><a href={law} target="_blank" rel="noreferrer">Law of Root · {scene.reference}</a></aside><div className="story-playback"><button disabled={last||reduced} onClick={()=>{setPlaying(p=>!p);setPaused(playing)}}>{playing?"Tạm dừng":"Tự phát"}</button><button onClick={()=>{setStep(0);reset();setPlaying(!reduced)}}>Phát lại cảnh</button><button disabled={last} onClick={()=>{setStep(scene.steps.length-1);setPlaying(false);setPaused(false)}}>Bỏ qua animation</button></div><div className="story-navigation"><button className="ghost" disabled={sceneIndex===0&&step===0} onClick={previous}>Quay lại</button><button className="primary" disabled={last&&sceneIndex===storyScenes.length-1} onClick={next}>{last?sceneIndex===storyScenes.length-1?"Đã hết câu chuyện":"Sang cảnh tiếp":"Tiếp tục câu chuyện"}</button></div><small className="story-example-note">Ví dụ theo Standard Setup và Autumn. Các mô hình tương tác giúp học luật, không phải bàn chơi hoàn chỉnh. Luật move/battle/craft chung xem trang luật cơ bản; ADSET và map khác theo luật riêng. Tự phát 12 giây/bước, dừng cuối cảnh.</small>{last&&sceneIndex===storyScenes.length-1&&<a className="rules-nav-link" href="/rules">Ôn lại luật cơ bản</a>}</div></div>
-<details className="eyrie-reference"><summary>Tờ nhắc tại bàn · một lượt Đại bàng</summary><ol><li><b>Birdsong:</b> tay rỗng thì rút 1; thêm 1–2 lá Decree, tối đa 1 Chim mới; nếu không còn roost trên map, làm A New Roost.</li><li><b>Daylight:</b> craft bằng roost trước; rồi giải hết Recruit → Move → Battle → Build. Mỗi lá một hành động; trong cột được đổi thứ tự.</li><li><b>Turmoil:</b> không hoàn thành một lệnh → mất VP theo Chim (gồm Vizier), bỏ lá thường, thay leader và chuyển Vizier, kết thúc Daylight.</li><li><b>Evening, kể cả sau Turmoil:</b> ghi VP từ track roost; rút 1 + bonus đã lộ; bỏ xuống 5.</li></ol><a href={law} target="_blank" rel="noreferrer">Luật chính thức · phần 7: Eyrie Dynasties</a><p>Hướng dẫn tiếng Việt diễn giải Law of Root; artwork quân/roost từ Learn to Play của Leder Games, leader cards từ Leder Card Library. Khi có ngoại lệ, dùng luật chính thức.</p></details>
-</section>}
+<div className="interaction-feedback" role="status">{scene.id==="birdsong"?feedback:scene.id==="build"?(buildChoice==="legal"?"Nếu còn roost trên track và không có hạn chế đặt piece khác, Build Thỏ tại B hợp lệ.":"Không thể hoàn thành lá Build Thỏ tại B. Nếu không có clearing Thỏ khác hợp lệ, Turmoil ngay khi đến lá này."):""}</div>
+</div>;
+}
+export default function EyrieAdventure(){return <RuleBook id="eyrie-dynasties" name="Triều đại Đại bàng" subtitle="EYRIE DYNASTIES · LUẬT PHE" description="Chuẩn bị phe, thủ lĩnh, Decree và thứ tự lượt chơi. Toàn bộ luật hiển thị trên một trang; các ví dụ tương tác có thể đặt lại riêng." portrait="/assets/eyrie-dynasties-portrait.webp" law={law} topics={topics} renderExample={topic=><EyrieExample id={topic.id}/>}>
+<p className="story-example-note">Ví dụ theo Standard Setup và Autumn. Các mô hình tương tác giúp học luật, không phải bàn chơi hoàn chỉnh. Luật move/battle/craft chung xem trang luật cơ bản; ADSET và map khác theo luật riêng.</p>
+<section className="eyrie-reference"><h2>Tờ nhắc tại bàn · một lượt Đại bàng</h2><ol><li><b>Birdsong:</b> tay rỗng thì rút 1; thêm 1–2 lá Decree, tối đa 1 Chim mới; nếu không còn roost trên map, làm A New Roost.</li><li><b>Daylight:</b> craft bằng roost trước; rồi giải hết Recruit → Move → Battle → Build. Mỗi lá một hành động; trong cột được đổi thứ tự.</li><li><b>Turmoil:</b> không hoàn thành một lệnh → mất VP theo Chim (gồm Vizier), bỏ lá thường, thay leader và chuyển Vizier, kết thúc Daylight.</li><li><b>Evening, kể cả sau Turmoil:</b> ghi VP từ track roost; rút 1 + bonus đã lộ; bỏ xuống 5.</li></ol><a href={law} target="_blank" rel="noreferrer">Luật chính thức · phần 7: Eyrie Dynasties</a><p>Hướng dẫn tiếng Việt diễn giải Law of Root; artwork quân/roost từ Learn to Play của Leder Games, leader cards từ Leder Card Library. Khi có ngoại lệ, dùng luật chính thức.</p></section>
+</RuleBook>}

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { storyScenes, type SceneId } from "./story-data";
 import "./adventure.css";
+import RuleBook from "./rule-book";
 
 const law="https://rules.ledergames.com/?product=root&locale=en-US";
 const art = (name:string)=>`/assets/rules/${name}.png`;
@@ -31,23 +32,13 @@ function MapBoard({scene,step,route}:{scene:SceneId;step:number;route:string}) {
   </div>;
 }
 
-export default function Adventure() {
-  const [sceneIndex,setSceneIndex]=useState(0),[step,setStep]=useState(0),[playing,setPlaying]=useState(false);
-  const [motionPaused,setMotionPaused]=useState(false);
-  const [reduced,setReduced]=useState(false),[bWarriors,setBWarriors]=useState(3),[route,setRoute]=useState(""),[answer,setAnswer]=useState("");
-  const scene=storyScenes[sceneIndex], current=scene.steps[step], last=step===scene.steps.length-1;
-  useEffect(()=>{const media=matchMedia("(prefers-reduced-motion: reduce)");setReduced(media.matches);const update=()=>{setReduced(media.matches);if(media.matches)setPlaying(false);};media.addEventListener("change",update);return()=>media.removeEventListener("change",update);},[]);
-  useEffect(()=>{if(!playing || last)return;const timer=setTimeout(()=>setStep(s=>s+1),12000);return()=>clearTimeout(timer);},[playing,step,sceneIndex,last]);
-  useEffect(()=>{if(last)setPlaying(false);},[last]);
-  function openScene(index:number){setSceneIndex(index);setStep(0);setPlaying(false);setMotionPaused(false);setBWarriors(3);setRoute("");setAnswer("");}
-  function next(){setPlaying(false);setMotionPaused(false);if(last){if(sceneIndex<storyScenes.length-1)openScene(sceneIndex+1);}else setStep(s=>s+1);}
-  function previous(){setPlaying(false);setMotionPaused(false);if(step>0)setStep(s=>s-1);else if(sceneIndex>0)openScene(sceneIndex-1);}
-  const bCount=scene.id==="rule"?(step===3?bWarriors:2):scene.id==="battle"?(step>=2?0:1):2;
-  const ruler=bCount===3?"Không ai rule · hòa 3–3":bCount>3?`B rule · ${bCount} > 3`:"A rule · 3 lớn hơn từng đối thủ";
-  return <section className={`adventure ${playing?"is-playing":"is-paused"} ${motionPaused?"motion-paused":""} ${reduced?"reduce-motion":""}`} aria-label="Câu chuyện luật Root tương tác">
-    <div className="adventure-top"><div><span className="eyebrow">MỘT NGÀY TRONG RỪNG ROOT</span><h1>Đi cùng đoàn quân.</h1><p>Mở từng cảnh, xem điều xảy ra trên bàn rồi tự thử một nước đi.</p></div><a href="#full-rules" onClick={()=>{const details=document.getElementById("full-rules") as HTMLDetailsElement|null;if(details)details.open=true;}} className="rules-nav-link">Tra toàn bộ luật</a></div>
-    <nav className="scene-selector" aria-label="Chọn cảnh câu chuyện">{storyScenes.map((item,i)=><button key={item.id} onClick={()=>openScene(i)} aria-current={sceneIndex===i?"step":undefined} className={sceneIndex===i?"active":""}><small>{String(i+1).padStart(2,"0")}</small>{item.subtitle}</button>)}</nav>
-    <div className="adventure-spread"><div className="adventure-visual"><div className="visual-heading"><span>CẢNH {sceneIndex+1}/{storyScenes.length}</span><b>{scene.subtitle}</b><label><input type="checkbox" checked={reduced} onChange={e=>{setReduced(e.target.checked);if(e.target.checked)setPlaying(false);}}/> Giảm chuyển động</label></div>
+function GeneralExample({id}:{id:SceneId}) {
+  const scene=storyScenes.find(topic=>topic.id===id)!;
+  const step=scene.steps.length-1;
+  const [bWarriors,setBWarriors]=useState(3),[route,setRoute]=useState(""),[answer,setAnswer]=useState("");
+  const bCount=scene.id==="rule"?bWarriors:scene.id==="battle"?0:2;
+  const ruler=bCount===3?"A = B: 3" : bCount>3?`B rule: ${bCount} > 3`:"A rule: 3 > B, C";
+  return <div className="adventure-visual reduce-motion">
       <div className={`story-stage stage-${scene.id}`} key={`${scene.id}-${step}`}>
         {["setup","map","move","dominance"].includes(scene.id)?<MapBoard key={route} scene={scene.id} step={step} route={route}/>:
         ["rule","ambush","battle"].includes(scene.id)?<div className="clearing-closeup"><div className="closeup-title"><img src={art("rabbit")} alt="Thỏ"/><b>Clearing B · Thỏ</b><span>Ví dụ luật chung · không dùng năng lực phe</span></div><div className="armies">
@@ -61,11 +52,28 @@ export default function Adventure() {
         scene.id==="cards"?<div className="card-workbench"><img className={`actual-card ${step===2?"spent-card":""}`} src={art("craft-card")} alt="Lá Boots chính thức với suit và chi phí craft"/><div className="card-explanation">{step===0?<><b>Đọc hai phần riêng</b><span>Suit ở đầu: dùng matching cho hành động</span><span>Góc dưới trái: chi phí craft</span></>:step===1?<><img src={art("bird")} alt="Chim"/><b>Chim có thể thay Thỏ</b><img src={art("rabbit")} alt="Thỏ"/><small>Thỏ không thay yêu cầu Chim</small></>:<><b>Spend → chồng bỏ</b><span>Reveal → làm theo chỉ dẫn, không tự bỏ</span></>}</div>{step===2&&<div className="discard-pile">Chồng bỏ chung</div>}</div>:
         scene.id==="craft"?<div className="craft-workbench"><img className="actual-card" src={art("craft-card")} alt="Lá Boots: chi phí một crafting piece Thỏ, một điểm"/><div className="craft-parts"><div className={`crafting-source ${step>=1?"activated":""}`}><img src={art("rabbit")} alt="Thỏ"/><Piece kind="building" used={step>=1}/><b>Crafting piece Thỏ</b><small>{step>=1?"Đã kích hoạt · vẫn ở trên map":"Chưa dùng lượt này"}</small></div><div className={`crafted-item ${step>=2?"item-delivered":""}`}><Piece kind="boot"/><b>{step>=2?"Crafted Items · +1 điểm":"Nguồn item chung"}</b></div></div>{step===3&&<div className="hit-choice"><b>Nhận 1 hit, còn warrior + building. Loại gì trước?</b><div><button onClick={()=>setAnswer("correct")}><Piece kind="warrior"/>Warrior</button><button onClick={()=>setAnswer("wrong")}><Piece kind="building"/>Building</button></div></div>}</div>:
         scene.id==="turn"?<div className={`day-clock day-${step}`}><img src="/assets/autumn-map.webp" alt="Khu rừng đi qua ba pha"/><div className="phase-stations">{["Birdsong","Daylight","Evening"].map((phase,i)=><div className={Math.min(step,2)===i?"active":""} key={phase}><span>{["Bình minh","Ban ngày","Buổi tối"][i]}</span><b>{phase}</b></div>)}</div><div className="turn-players"><span className={step<3?"active":""}>Ngày của A</span><span className={step===3?"active":""}>Ngày của B</span><span>Ngày của C</span></div></div>:
-        <div className="victory-board"><img src="/assets/autumn-map.webp" alt="Bản đồ Root và thang điểm"/><div className="score-track"><span>28</span><span className={step===0?"score-current":""}>29</span><span className={step>=1?"score-current":""}>30</span></div><div className="victory-caption">{step===0?"Còn một điểm cho câu chuyện của bạn":step===1?"30 điểm · thắng ngay!":"Thỏa thuận không ràng buộc · chơi theo luật"}</div></div>}
+        <div className="victory-board"><img src="/assets/autumn-map.webp" alt="Bản đồ Root và thang điểm"/><div className="score-track"><span>28</span><span className={step===0?"score-current":""}>29</span><span className={step>=1?"score-current":""}>30</span></div><div className="victory-caption">{step===0?"Còn 1 điểm để đạt 30":step===1?"30 điểm · thắng ngay!":"Thỏa thuận không ràng buộc · chơi theo luật"}</div></div>}
       </div>
       {scene.id==="rule"&&step===3&&<div className="scene-interaction"><span>Thử đổi warrior của B</span><button onClick={()=>setBWarriors(n=>Math.max(0,n-1))} disabled={bWarriors===0} aria-label="Bớt warrior B">−</button><b>{bWarriors}</b><button onClick={()=>setBWarriors(n=>Math.min(5,n+1))} disabled={bWarriors===5} aria-label="Thêm warrior B">+</button></div>}
       {scene.id==="move"&&step===2&&<div className="scene-interaction route-choices"><span>Chọn đường của đoàn A:</span><button className={route==="legal"?"chosen":""} onClick={()=>setRoute("legal")}>B → C (C do A rule)</button><button className={route==="illegal"?"chosen":""} onClick={()=>setRoute("illegal")}>B → góc xa map</button></div>}
       <div className="interaction-feedback" role="status">{route&&scene.id==="move"&&step===2?(route==="legal"?"Hợp lệ: B và C có đường nối, A rule C. Đây là một move mới.":"Chưa hợp lệ: không có đường nối trực tiếp. Phải đi từng clearing và kiểm tra rule mỗi chặng."):answer&&scene.id==="craft"&&step===3?(answer==="correct"?"Đúng rồi! Warrior chịu hit trước; building vẫn ở lại.":"Chưa đúng. Bạn còn warrior, nên phải loại warrior trước building."):""}</div>
-    </div><div className="adventure-narrative"><span className="eyebrow">{scene.title}</span><div className="step-dots" aria-label="Bước trong cảnh">{scene.steps.map((s,i)=><button key={s.title} className={step===i?"current":""} onClick={()=>{setPlaying(false);setMotionPaused(false);setStep(i);}} aria-label={`Bước ${i+1}: ${s.title}`} aria-current={step===i?"step":undefined}>{i+1}</button>)}</div><div className="narration" key={`${scene.id}-${step}`} aria-live="polite"><h2>{current.title}</h2><p>{current.story}</p></div><aside className="scene-rule"><b>Luật cần nhớ</b><p>{current.rule}</p><a href={law} target="_blank" rel="noreferrer">Law of Root · {scene.reference}</a></aside><div className="story-playback"><button disabled={last || reduced} onClick={()=>{setPlaying(v=>!v);setMotionPaused(playing);}}>{playing?"Tạm dừng":"Tự phát"}</button><button onClick={()=>{setStep(0);setRoute("");setAnswer("");setBWarriors(3);setMotionPaused(false);setPlaying(!reduced);}}>Phát lại cảnh</button><button disabled={last} onClick={()=>{setPlaying(false);setMotionPaused(false);setStep(scene.steps.length-1);}}>Bỏ qua animation</button></div><div className="story-navigation"><button className="ghost" onClick={previous} disabled={sceneIndex===0&&step===0}>Quay lại</button><button className="primary" onClick={next} disabled={last&&sceneIndex===storyScenes.length-1}>{last?(sceneIndex===storyScenes.length-1?"Đã hết câu chuyện":"Sang cảnh tiếp"):"Tiếp tục câu chuyện"}</button></div><small className="story-example-note">Hình quân dùng để minh họa A/B/C, không áp dụng năng lực riêng của faction. Tự phát chuyển bước sau 12 giây và dừng ở cuối mỗi cảnh để bạn đọc và thử.</small>{last&&sceneIndex===storyScenes.length-1&&<a className="rules-nav-link" href="#full-rules">Đọc luật đầy đủ và các ngoại lệ</a>}</div></div>
-  </section>;
+    <button className="rules-nav-link" onClick={()=>{setBWarriors(3);setRoute("");setAnswer("");}}>Đặt lại ví dụ</button>
+  </div>;
+}
+export default function Adventure() {
+  const headings: Record<SceneId, string[]> = {
+    setup: ["Mục tiêu 30 điểm", "Ruin, item và bản đồ", "Bài ban đầu và cách setup"],
+    map: ["Clearing và suit", "Slot building và token", "Adjacency, sông và forest"],
+    cards: ["Spend và craft", "Bài Chim và matching", "Spend, discard và reveal"],
+    rule: ["Đếm warrior và building", "Token không tính rule", "So với từng đối thủ", "Hòa quyền kiểm soát"],
+    move: ["Điều kiện ở hai đầu đường", "Một move tới clearing kề", "Kiểm tra từng move"],
+    ambush: ["Chơi Ambush", "Chịu 2 hit trước xúc xắc", "Foil Ambush"],
+    battle: ["Chọn attacker và defender", "Xúc xắc và giới hạn hit", "Thứ tự chịu hit", "Điểm khi loại building/token"],
+    craft: ["Chi phí craft", "Kích hoạt crafting piece", "Nhận item và điểm", "Warrior chịu hit trước"],
+    turn: ["Birdsong", "Daylight", "Evening", "Chuyển lượt theo chiều kim đồng hồ"],
+    victory: ["Đạt 30 điểm", "Thắng ngay", "Thỏa thuận và luật ưu tiên"],
+    dominance: ["Kích hoạt Dominance", "Điều kiện suit", "Kiểm tra ở đầu Birdsong"],
+  };
+  const topics=storyScenes.map(scene=>({...scene,title:scene.id === "rule" ? "Rule: quyền kiểm soát" : scene.subtitle,ref:scene.reference,steps:scene.steps.map((point,i)=>({...point,title:headings[scene.id][i]}))}));
+  return <RuleBook id="general" name="Luật cơ bản của Root" description="Đọc các luật trên một trang, dùng mục lục để tra nhanh và thử trực tiếp các ví dụ bên cạnh." law={law} topics={topics} renderExample={topic=><GeneralExample id={topic.id as SceneId}/>}/>;
 }

@@ -1,46 +1,353 @@
-export const law="https://rules.ledergames.com/?locale=en-US&printing=p16&product=root";
-export const scenes=[
-{id:"setup",title:"Một nơi nương tựa",ref:"§16.3",steps:[{title:"Năm chú Ếch đến bờ sông",story:"Cộng đồng đến rừng với 20 warrior và 12 enclave hai mặt. Trong Standard Setup, chọn một clearing trên sông để đặt 5 warrior và 1 enclave mặt Peaceful.",rule:"Enclave là token, không phải building: không chiếm slot và không góp rule. Mỗi clearing tối đa 1 enclave. Bài tay theo setup chung; ADSET theo thẻ setup riêng."},{title:"Thêm một chất cho cả khu rừng",story:"Xáo 14 lá Ếch vào bộ bài chung và đặt bảng Pond cạnh deck. Lá Ếch được mọi người rút và sử dụng, không phải bộ bài riêng chỉ dành cho phe Ếch.",rule:"Game 2 người loại Frog Dominance vĩnh viễn, nên chỉ thêm 13 lá. Bài Ếch có chất Frog; một số lá có crafting icon Frog và hiệu ứng riêng."}]},
-{id:"enclaves",title:"Peaceful và Militant",ref:"§16.2.1",steps:[{title:"Hòa bình thêm một nền văn hóa",story:"Một enclave Peaceful tại clearing Cáo khiến nơi đó có cả Cáo và Ếch. Lá Cáo hoặc lá Ếch đều có thể matching clearing, tùy action đang làm.",rule:"Peaceful thêm Frog, không xóa chất gốc. Enclave không tự cho rule và không ngăn battle. Token bị remove thì chất clearing trở về theo các hiệu ứng còn lại."},{title:"Khi cộng đồng đóng cửa",story:"Lật enclave ấy sang Militant: clearing chỉ còn Ếch, không còn Cáo để matching. Đây là thay đổi áp dụng cho cả bàn, không chỉ cho Cộng đồng.",rule:"Militant thay chất clearing bằng Frog. Lá Chim vẫn wild theo luật chung; lá Ếch không phải lá Chim và không tự wild cho mọi chất."}]},
-{id:"swimmers",title:"Sông là đường đi",ref:"Swimmers; §4.2",steps:[{title:"Qua sông không cần rule",story:"Ếch coi sông là đường và có thể Move giữa hai clearing được một đoạn sông nối hoàn toàn, bỏ yêu cầu rule ở hai đầu. Vì vậy một đoàn quân có thể tới nơi đối thủ kiểm soát.",rule:"Swimmers chỉ bỏ rule khi Move theo sông. Đi theo đường thông thường vẫn cần rule nơi đi hoặc nơi đến. Hạn chế Move khác vẫn áp dụng."},{title:"Bơi không tạo action riêng",story:"Trong Daylight, bạn thường Move bằng Settle. Chọn clearing đích rồi đưa các nhóm quân từ những clearing kề vào đó; sông cũng có thể tạo adjacency cho Ếch.",rule:"Không tự có action Move miễn phí chỉ vì có Swimmers. Trong một Settle, mỗi clearing xuất phát kề được dùng tối đa một lần để Move vào clearing đã chọn."}]},
-{id:"pond",title:"Ao bài The Pond",ref:"The Pond",steps:[{title:"Lá Ếch bị bỏ nổi lên mặt ao",story:"Khi một lá Ếch bị discard, đặt ngửa lên trên cùng Pond thay vì discard chung. Spend một lá bình thường dẫn đến discard cũng dùng chồng đúng loại; hiệu ứng lâu dài đang được craft vẫn ở play area.",rule:"Có Giáo phái Thằn Lằn thì lá Ếch discard vào Pond, bỏ qua Lost Souls. Lá trao cho người khác không phải discard nên không vào Pond."},{title:"Chỉ lá đầu của mỗi lần rút",story:"Mỗi lần một người được rút nhiều lá, họ có thể lấy lá đầu từ trên cùng Pond thay vì deck. Các lá còn lại của lần rút ấy vẫn từ deck.",rule:"Không lựa một lá ở giữa Pond và không lấy toàn bộ đợt rút từ ao. Khi deck phải xáo lại, xáo cả Pond cùng discard vào deck mới."}]},
-{id:"craft",title:"Craft trước khi hòa giải",ref:"§16.4.1; §4.1",steps:[{title:"Mỗi enclave một crafting piece",story:"Bước đầu Birdsong, craft bằng enclave trên map. Peaceful tại Cáo cung cấp icon Cáo hoặc icon Ếch; Militant chỉ cung cấp icon Ếch. Bạn chọn một chất phù hợp cho mỗi token khi activate.",rule:"Mỗi enclave activate tối đa 1 lần/lượt, không cung cấp hai icon cùng lúc dù clearing hai chất. Token không cần warrior canh hoặc rule để craft."},{title:"Đúng cost, đúng thời điểm",story:"Chất ở góc lá không phải crafting cost. Đọc các icon cost để chọn enclave. Sau craft mới Rally/Reconcile, nên enclave đang Militant chưa trở lại chất gốc cho bước craft vừa diễn ra.",rule:"Icon cost bất kỳ chất có thể dùng crafting piece Ếch; không suy ra một lá Ếch wild cho mọi action. Item craft cần còn nguồn chung, hiệu ứng lâu dài theo card, và không craft trùng hiệu ứng lâu dài đã có."}]},
-{id:"birdsong",title:"Rally hoặc Reconcile",ref:"§16.4.2",steps:[{title:"Tập hợp lực lượng",story:"Sau craft, phải chọn Rally hoặc Reconcile. Rally đặt 1 warrior nguồn tại mỗi enclave đang Militant. Peaceful không nhận quân từ Rally.",rule:"Chỉ chọn một trong hai bước, không làm cả hai. Quân có giới hạn nguồn; đặt tối đa số có thể, tuân thủ hạn chế place."},{title:"Hòa giải và trả bài cho người rule",story:"Reconcile cho phép lật bất kỳ số enclave Militant sang Peaceful, kể cả không lật cái nào. Mỗi lần lật, nếu có người rule clearing đó thì chính người ấy rút 1 lá, có thể từ Pond.",rule:"Người rule có thể là bạn, đối thủ hoặc không ai. Không ai rule thì không có người rút. Bạn chọn enclave để lật; người rule nhận bài, không mặc định mọi lá thuộc Ếch."}]},
-{id:"settle",title:"Settle: tụ quân, định cư",ref:"§16.5.1",steps:[{title:"Một đích, nhiều đường vào",story:"Chọn một clearing. Bạn có thể Move vào nó từ nhiều clearing kề, tối đa một Move từ mỗi nơi xuất phát. Có thể không Move nếu quân đã ở nơi cần thiết.",rule:"Mọi Move trong Settle cùng một đích. Swimmers áp dụng khi dùng sông; đường thường cần rule. Hoàn thành phần Move rồi mới chọn phần cuối."},{title:"Đánh hoặc đặt enclave, không cả hai",story:"Sau Move, bạn có thể Battle tại clearing đó, hoặc đặt enclave Peaceful nếu bạn rule và nơi đó chưa có enclave. Nếu chọn đánh để giành rule, muốn đặt token sau đó cần một Settle khác.",rule:"Settle không bắt discard/reveal bài. Đặt Peaceful cần token nguồn, clearing chưa có enclave và placement hợp lệ. Có thể đặt ngoài sông; không bắt buộc đã có warrior nếu vẫn rule hợp lệ."}]},
-{id:"provoke",title:"Provoke: nổi giận và tuyển quân",ref:"§16.5.2",steps:[{title:"Lật một nơi hoặc mở nơi mới",story:"Provoke lật 1 Peaceful enclave sang Militant, hoặc đặt 1 Militant enclave mới tại clearing trên sông hay clearing có warrior Ếch. Đặt mới không cần rule nhưng nơi đó phải chưa có enclave.",rule:"Hai lựa chọn đầu là lật token đang Peaceful, hoặc đặt token mới hợp lệ. Không lấy một Militant có sẵn làm mục tiêu lật để bỏ qua bước đầu."},{title:"Mỗi Militant đều nhận quân",story:"Sau bước đầu, đặt 1 warrior tại mỗi Militant enclave trên map, kể cả những nơi đã Militant từ trước. Cuối action, discard ngẫu nhiên 1 lá tay; nếu tay trống thì bỏ qua discard.",rule:"Provoke không chỉ tuyển tại nơi vừa lật/đặt. Mỗi lần Provoke lại tính toàn bộ Militant hiện tại. Không có bài không ngăn Provoke; nếu có bài phải bỏ ngẫu nhiên, không chọn lá."}]},
-{id:"fears",title:"Nỗi sợ thành sự thật",ref:"Fears Come to Pass",steps:[{title:"Sau một cuộc tấn công",story:"Đối thủ tấn công Ếch đang phòng thủ tại Peaceful enclave: sau battle, mọi Peaceful enclave còn trên map có piece của đối thủ ấy đều lật Militant, rồi nhận 1 warrior Ếch mỗi nơi vừa lật.",rule:"Không cần đối thủ phá được token hoặc giết quân mới kích hoạt. Chỉ các Peaceful có pieces của phe gây sự bị lật, không phải tất cả enclave trên map."},{title:"Remove ngoài battle cũng gây phản ứng",story:"Nếu một enemy remove Peaceful enclave ngoài battle, cũng áp dụng phản ứng dây chuyền. Token đã bị remove không còn để lật; các enclave khác của những nơi có piece đối thủ ấy vẫn có thể đổi mặt.",rule:"Ếch chủ động tấn công không tự kích hoạt luật này. Battle tại Militant không đáp ứng trigger Peaceful. Warrior thêm lấy từ nguồn, và hạn chế place vẫn áp dụng."}]},
-{id:"negotiations",title:"Đối thủ cũng có thể hòa giải",ref:"Negotiations",steps:[{title:"Một lần trong lượt của họ",story:"Một enemy có faction piece tại clearing có Militant enclave được Negotiations tối đa một lần trong lượt mình để lật nó sang Peaceful. Không cần warrior: building hoặc token của phe đó cũng là presence.",rule:"Đây không phải Settle/Provoke và không dùng một action của Ếch. Hireling không phải faction piece của chủ điều khiển. Không ngắt action đang diễn ra; vẫn theo cửa sổ hành động chung."},{title:"Trả bài nếu một người khác rule",story:"Nếu người lật không rule nhưng một người khác rule, họ phải đưa 1 lá tay cho người rule để lật. Nếu họ tự rule hoặc không ai rule, không phải trả bài.",rule:"Lá trả không cần matching chất. Bài trao là give, không discard. Không đủ bài để trả khi có người khác rule thì không thể lật bằng Negotiations."}]},
-{id:"retaliate",title:"Retaliate trước khi ghi điểm",ref:"§16.6.1",steps:[{title:"Militant buộc phải trả đũa",story:"Đầu Evening, bạn phải Battle ở mỗi Militant enclave nếu có thể thực hiện battle hợp lệ. Chọn đối thủ hợp lệ tại từng clearing; token không tự cho quân để tấn công.",rule:"Không có enemy để battle hoặc không có warrior tấn công hợp lệ thì không thực hiện trận đó. Không cần rule để Battle. Không được tự bỏ qua một trận hợp lệ vì ngại ambush."},{title:"Không bỏ qua người mới xuất hiện",story:"Nếu trong bước Retaliate có enemy pieces được đặt vào một Militant enclave vốn chưa có địch, bạn cũng phải battle chúng. Nếu chỉ có Mercenaries mới giúp battle được thì vẫn phải battle theo luật dịch vụ.",rule:"Retaliate không tốn ba action Daylight và diễn ra trước Integrate. Áp dụng luật battle, hiệu ứng card và các giới hạn dịch vụ; không giả định mọi Militant luôn có battle."}]},
-{id:"integrate",title:"Integrate: một chất, một lá",ref:"§16.6.2–3",steps:[{title:"Hòa bình cho điểm, không phải cơn giận",story:"Sau Retaliate, có thể spend 1 lá Cáo để ghi 1 VP cho mỗi Peaceful enclave matching Cáo. Lá Chim có thể được xem là Cáo, Thỏ hoặc Chuột cho lần này.",rule:"Integrate tối đa một lần/lượt. Không ghi chất Ếch, nên không spend lá Ếch để cộng mọi Peaceful. Militant không ghi điểm Integrate; không cần rule các Peaceful được tính."},{title:"Rút theo tổng cộng đồng hòa bình",story:"Sau Integrate, đếm mọi Peaceful trên map để rút: 0–1 rút 1 lá, 2–3 rút 2, 4–7 rút 3, từ 8 rút 4. Sau đó nếu tay vượt 5, chọn discard xuống 5.",rule:"Rút theo tổng Peaceful mọi chất, không chỉ chất vừa Integrate. Một lần rút nhiều lá chỉ lá đầu được chọn Pond; bỏ bài tay cuối lượt không phải bỏ ngẫu nhiên như Provoke."}]},
-{id:"dominance",title:"Lá Ếch và Frog Dominance",ref:"Frog Cards; Frog Dominance",steps:[{title:"Lá văn hóa cho cả bàn",story:"Bất kỳ phe nào cũng có thể rút và craft các lá Ếch theo cost. Nhiều hiệu ứng yêu cầu hoặc buộc Cộng đồng làm action; Cộng đồng cũng có thể craft để dùng hiệu ứng ấy cho mình.",rule:"Làm đúng câu chữ lá thật, gồm timing, ai chọn và ai hành động. Craft hiệu ứng không tự cho Integrate thêm lần hoặc bỏ giới hạn khác nếu card không nói vậy."},{title:"Một lời thề khác để thắng",story:"Theo luật Dominance chung, từ 10 VP trong Daylight có thể kích hoạt Frog Dominance. Người kích hoạt thắng đầu Birdsong của họ nếu rule ít nhất 2 enclave trên sông, Peaceful hoặc Militant.",rule:"Kích hoạt thì bỏ marker VP, không tiếp tục ghi VP. Frog Dominance không dùng trong game 2 người. Người khác ngoài Ếch cũng có thể kích hoạt; rule enclave nghĩa là rule clearing chứa token."},{title:"Bảo vệ cộng đồng",story:"Người có Frog Dominance đang kích hoạt thêm faction warriors của họ tại clearing có enclave vào quân phòng thủ khi Ếch defending. Những quân này nhận hits sau quân Ếch, trừ khi chính người có Dominance là attacker.",rule:"Chỉ áp dụng với enclave tại battle clearing. Nếu cùng có Peacekeepers của Dơi, Ếch chọn phối hợp quân Dơi và quân Enclave Defense nhận hits sau quân mình. Không tự trao rule hoặc chuyển chủ quân."}]},
-{id:"interactions",title:"Cả rừng đổi theo enclave",ref:"Matching; luật phe liên quan",steps:[{title:"Đại bàng và Chuột chũi",story:"Peaceful ở Cáo đáp ứng cả Decree Cáo và Decree Ếch. Lật Militant có thể khiến Decree Cáo không còn matching nơi đó. Chuột chũi có thể dùng một clearing hai chất để hỗ trợ một lá Sway thuộc một trong hai chất.",rule:"Một clearing hai chất vẫn chỉ hỗ trợ 1 lá trong Sway, không phải 2. Giới hạn action và presence của từng phe vẫn áp dụng. Frog cards không wild như Chim."},{title:"Liên minh và Thằn Lằn",story:"Liên minh có thể trộn Cáo và Ếch để Revolt ở clearing Cáo Peaceful. Tại Militant chỉ Frog, không có base Frog nên không thể đặt base để Revolt. Thằn Lằn có thể dùng Frog cho Recruit/Build tại enclave, rồi chọn garden theo chất in của clearing.",rule:"Garden không có bản Frog; dùng chất in Cáo/Thỏ/Chuột để chọn mảnh garden. Muốn craft, vẫn xét garden có chất in trùng Outcast, còn icon cung cấp theo chất clearing hiện tại. Card/map có ngoại lệ riêng vẫn áp dụng."}]},
-{id:"example",title:"Một lượt trên bờ sông",ref:"§16.4–6",steps:[{title:"Đầu ngày hòa giải, sau đó mở nơi mới",story:"Ví dụ có 2 Peaceful Cáo và 1 Militant Thỏ. Sau craft, chọn Reconcile lật Thỏ Peaceful; người rule Thỏ rút 1. Daylight Settle tới một clearing Cáo chưa có enclave, giành rule nhờ các Move rồi đặt Peaceful mới.",rule:"Giả định mọi Move và placement hợp lệ, đủ quân/token. Hiện có 3 Peaceful Cáo và 1 Peaceful Thỏ, tổng 4; bạn còn tối đa 2 action Daylight."},{title:"Kết thúc trong hòa bình",story:"Bạn có thể kết thúc Daylight sớm, không buộc dùng hết ba action. Không còn Militant nên Retaliate không có trận. Spend một Cáo Integrate ghi 3 VP, rồi rút 3 lá nhờ tổng 4 Peaceful.",rule:"Có thể chọn lá đầu từ Pond nếu có, hai lá còn lại từ deck. Các số là ví dụ một trạng thái hợp lệ; không phải setup hay lộ trình bắt buộc."}]},
-{id:"strategy",title:"Giữ nhịp hòa bình",ref:"Mẹo chơi · không phải luật",steps:[{title:"Militant cho quân, Peaceful cho bài và VP",story:"Cơn giận giúp tạo quân, nhưng làm bạn mất nguồn điểm và phải Battle ở Evening. Hãy nhìn enclave nào cần giữ Peaceful, enclave nào dùng làm nơi tập hợp, và tay còn lá matching để Integrate không.",rule:"Đây là mẹo, không phải luật bắt buộc. Provoke discard ngẫu nhiên có thể làm mất lá định Integrate, nên cân nhắc thứ tự và dự phòng bài."},{title:"Đối thủ cũng đổi được nhịp",story:"Negotiations có thể giúp bạn lấy lại Peaceful; ngược lại một battle ở nơi hòa bình có thể lật nhiều enclave cùng lúc nếu phe tấn công hiện diện rộng. Theo dõi pieces của từng đối thủ trước khi mở rộng.",rule:"Token không cho rule và hòa bình không ngăn bị đánh. Điểm thêm vẫn có thể đến từ craft item, loại enemy building/token hoặc hiệu ứng card hợp lệ."}]}
+import type { RuleTopic } from "../../rule-book";
+
+export const law = "https://rules.ledergames.com/?locale=en-US&printing=p16&product=root";
+
+export const topics: RuleTopic[] = [
+  {
+    "id": "setup",
+    "title": "Chuẩn bị phe và bộ bài",
+    "ref": "§16.3",
+    "steps": [
+      {
+        "title": "Đặt quân và enclave ban đầu",
+        "rule": "Phe có 20 warrior và 12 enclave hai mặt. Trong Standard Setup, chọn một clearing trên sông để đặt 5 warrior và 1 enclave mặt Peaceful. Enclave là token, không phải building: không chiếm slot và không góp rule. Mỗi clearing tối đa 1 enclave. Bài tay theo setup chung; ADSET theo thẻ setup riêng."
+      },
+      {
+        "title": "Thêm bài Ếch và Pond",
+        "rule": "Xáo 14 lá Ếch vào bộ bài chung và đặt bảng Pond cạnh deck. Lá Ếch được mọi người rút và sử dụng, không phải bộ bài riêng chỉ dành cho phe Ếch. Game 2 người loại Frog Dominance vĩnh viễn, nên chỉ thêm 13 lá. Bài Ếch có chất Frog; một số lá có crafting icon Frog và hiệu ứng riêng."
+      }
+    ]
+  },
+  {
+    "id": "enclaves",
+    "title": "Enclave và chất clearing",
+    "ref": "§16.2.1",
+    "steps": [
+      {
+        "title": "Peaceful: giữ chất gốc, thêm Frog",
+        "rule": "Một enclave Peaceful tại clearing Cáo khiến nơi đó có cả Cáo và Ếch. Lá Cáo hoặc lá Ếch đều có thể matching clearing, tùy action đang làm. Peaceful thêm Frog, không xóa chất gốc. Enclave không tự cho rule và không ngăn battle. Token bị remove thì chất clearing trở về theo các hiệu ứng còn lại."
+      },
+      {
+        "title": "Militant: chỉ còn chất Frog",
+        "rule": "Lật enclave ấy sang Militant: clearing chỉ còn Ếch, không còn Cáo để matching. Thay đổi chất áp dụng cho mọi phe. Militant thay chất clearing bằng Frog. Lá Chim vẫn wild theo luật chung; lá Ếch không phải lá Chim và không tự wild cho mọi chất."
+      }
+    ]
+  },
+  {
+    "id": "swimmers",
+    "title": "Swimmers: di chuyển trên sông",
+    "ref": "Swimmers; §4.2",
+    "steps": [
+      {
+        "title": "Bỏ yêu cầu rule khi đi theo sông",
+        "rule": "Ếch coi sông là đường và có thể Move giữa hai clearing được một đoạn sông nối hoàn toàn, bỏ yêu cầu rule ở hai đầu. Vì vậy một đoàn quân có thể tới nơi đối thủ kiểm soát. Swimmers chỉ bỏ rule khi Move theo sông. Đi theo đường thông thường vẫn cần rule nơi đi hoặc nơi đến. Hạn chế Move khác vẫn áp dụng."
+      },
+      {
+        "title": "Di chuyển bằng action hợp lệ",
+        "rule": "Trong Daylight, bạn thường Move bằng Settle. Chọn clearing đích rồi đưa các nhóm quân từ những clearing kề vào đó; sông cũng có thể tạo adjacency cho Ếch. Không tự có action Move miễn phí chỉ vì có Swimmers. Trong một Settle, mỗi clearing xuất phát kề được dùng tối đa một lần để Move vào clearing đã chọn."
+      }
+    ]
+  },
+  {
+    "id": "pond",
+    "title": "The Pond: bỏ và rút bài Ếch",
+    "ref": "The Pond",
+    "steps": [
+      {
+        "title": "Bỏ bài Ếch vào Pond",
+        "rule": "Khi một lá Ếch bị discard, đặt ngửa lên trên cùng Pond thay vì discard chung. Spend một lá bình thường dẫn đến discard cũng dùng chồng đúng loại; hiệu ứng lâu dài đang được craft vẫn ở play area. Có Giáo phái Thằn Lằn thì lá Ếch discard vào Pond, bỏ qua Lost Souls. Lá trao cho người khác không phải discard nên không vào Pond."
+      },
+      {
+        "title": "Chỉ lấy lá đầu của mỗi đợt rút",
+        "rule": "Mỗi lần một người được rút nhiều lá, họ có thể lấy lá đầu từ trên cùng Pond thay vì deck. Các lá còn lại của lần rút ấy vẫn từ deck. Không lựa một lá ở giữa Pond và không lấy toàn bộ đợt rút từ ao. Khi deck phải xáo lại, xáo cả Pond cùng discard vào deck mới."
+      }
+    ]
+  },
+  {
+    "id": "craft",
+    "title": "Craft bằng enclave",
+    "ref": "§16.4.1; §4.1",
+    "steps": [
+      {
+        "title": "Mỗi enclave cung cấp một icon",
+        "rule": "Bước đầu Birdsong, craft bằng enclave trên map. Peaceful tại Cáo cung cấp icon Cáo hoặc icon Ếch; Militant chỉ cung cấp icon Ếch. Bạn chọn một chất phù hợp cho mỗi token khi activate. Mỗi enclave activate tối đa 1 lần/lượt, không cung cấp hai icon cùng lúc dù clearing hai chất. Token không cần warrior canh hoặc rule để craft."
+      },
+      {
+        "title": "Kiểm tra cost và thứ tự Birdsong",
+        "rule": "Chất ở góc lá không phải crafting cost. Đọc các icon cost để chọn enclave. Sau craft mới Rally/Reconcile, nên enclave đang Militant chưa trở lại chất gốc cho bước craft vừa diễn ra. Icon cost bất kỳ chất có thể dùng crafting piece Ếch; không suy ra một lá Ếch wild cho mọi action. Item craft cần còn nguồn chung, hiệu ứng lâu dài theo card, và không craft trùng hiệu ứng lâu dài đã có."
+      }
+    ]
+  },
+  {
+    "id": "birdsong",
+    "title": "Birdsong: Rally hoặc Reconcile",
+    "ref": "§16.4.2",
+    "steps": [
+      {
+        "title": "Rally: tuyển tại Militant",
+        "rule": "Sau craft, phải chọn Rally hoặc Reconcile. Rally đặt 1 warrior nguồn tại mỗi enclave đang Militant. Peaceful không nhận quân từ Rally. Chỉ chọn một trong hai bước, không làm cả hai. Quân có giới hạn nguồn; đặt tối đa số có thể, tuân thủ hạn chế place."
+      },
+      {
+        "title": "Reconcile: lật Peaceful và cho người rule rút bài",
+        "rule": "Reconcile cho phép lật bất kỳ số enclave Militant sang Peaceful, kể cả không lật cái nào. Mỗi lần lật, nếu có người rule clearing đó thì chính người ấy rút 1 lá, có thể từ Pond. Người rule có thể là bạn, đối thủ hoặc không ai. Không ai rule thì không có người rút. Bạn chọn enclave để lật; người rule nhận bài, không mặc định mọi lá thuộc Ếch."
+      }
+    ]
+  },
+  {
+    "id": "settle",
+    "title": "Daylight: Settle",
+    "ref": "§16.5.1",
+    "steps": [
+      {
+        "title": "Di chuyển vào một clearing đích",
+        "rule": "Chọn một clearing. Bạn có thể Move vào nó từ nhiều clearing kề, tối đa một Move từ mỗi nơi xuất phát. Có thể không Move nếu quân đã ở nơi cần thiết. Mọi Move trong Settle cùng một đích. Swimmers áp dụng khi dùng sông; đường thường cần rule. Hoàn thành phần Move rồi mới chọn phần cuối."
+      },
+      {
+        "title": "Chọn Battle hoặc đặt Peaceful",
+        "rule": "Sau Move, bạn có thể Battle tại clearing đó, hoặc đặt enclave Peaceful nếu bạn rule và nơi đó chưa có enclave. Nếu chọn đánh để giành rule, muốn đặt token sau đó cần một Settle khác. Settle không bắt discard/reveal bài. Đặt Peaceful cần token nguồn, clearing chưa có enclave và placement hợp lệ. Có thể đặt ngoài sông; không bắt buộc đã có warrior nếu vẫn rule hợp lệ."
+      }
+    ]
+  },
+  {
+    "id": "provoke",
+    "title": "Daylight: Provoke",
+    "ref": "§16.5.2",
+    "steps": [
+      {
+        "title": "Lật Peaceful hoặc đặt Militant mới",
+        "rule": "Provoke lật 1 Peaceful enclave sang Militant, hoặc đặt 1 Militant enclave mới tại clearing trên sông hay clearing có warrior Ếch. Đặt mới không cần rule nhưng nơi đó phải chưa có enclave. Hai lựa chọn đầu là lật token đang Peaceful, hoặc đặt token mới hợp lệ. Không lấy một Militant có sẵn làm mục tiêu lật để bỏ qua bước đầu."
+      },
+      {
+        "title": "Tuyển tại mọi Militant rồi bỏ bài ngẫu nhiên",
+        "rule": "Sau bước đầu, đặt 1 warrior tại mỗi Militant enclave trên map, kể cả những nơi đã Militant từ trước. Cuối action, discard ngẫu nhiên 1 lá tay; nếu tay trống thì bỏ qua discard. Provoke không chỉ tuyển tại nơi vừa lật/đặt. Mỗi lần Provoke lại tính toàn bộ Militant hiện tại. Không có bài không ngăn Provoke; nếu có bài phải bỏ ngẫu nhiên, không chọn lá."
+      }
+    ]
+  },
+  {
+    "id": "fears",
+    "title": "Fears Come to Pass: phản ứng khi bị tấn công",
+    "ref": "Fears Come to Pass",
+    "steps": [
+      {
+        "title": "Enemy tấn công Peaceful khi Ếch defending",
+        "rule": "Đối thủ tấn công Ếch đang phòng thủ tại Peaceful enclave: sau battle, mọi Peaceful enclave còn trên map có piece của đối thủ ấy đều lật Militant, rồi nhận 1 warrior Ếch mỗi nơi vừa lật. Không cần đối thủ phá được token hoặc giết quân mới kích hoạt. Chỉ các Peaceful có pieces của phe gây sự bị lật, không phải tất cả enclave trên map."
+      },
+      {
+        "title": "Enemy loại Peaceful ngoài battle",
+        "rule": "Nếu một enemy remove Peaceful enclave ngoài battle, cũng áp dụng phản ứng dây chuyền. Token đã bị remove không còn để lật; các enclave khác của những nơi có piece đối thủ ấy vẫn có thể đổi mặt. Ếch chủ động tấn công không tự kích hoạt luật này. Battle tại Militant không đáp ứng trigger Peaceful. Warrior thêm lấy từ nguồn, và hạn chế place vẫn áp dụng."
+      }
+    ]
+  },
+  {
+    "id": "negotiations",
+    "title": "Negotiations: đối thủ lật Militant",
+    "ref": "Negotiations",
+    "steps": [
+      {
+        "title": "Điều kiện và giới hạn sử dụng",
+        "rule": "Một enemy có faction piece tại clearing có Militant enclave được Negotiations tối đa một lần trong lượt mình để lật nó sang Peaceful. Không cần warrior: building hoặc token của phe đó cũng là presence. Đây không phải Settle/Provoke và không dùng một action của Ếch. Hireling không phải faction piece của chủ điều khiển. Không ngắt action đang diễn ra; vẫn theo cửa sổ hành động chung."
+      },
+      {
+        "title": "Trao bài cho người khác đang rule",
+        "rule": "Nếu người lật không rule nhưng một người khác rule, họ phải đưa 1 lá tay cho người rule để lật. Nếu họ tự rule hoặc không ai rule, không phải trả bài. Lá trả không cần matching chất. Bài trao là give, không discard. Không đủ bài để trả khi có người khác rule thì không thể lật bằng Negotiations."
+      }
+    ]
+  },
+  {
+    "id": "retaliate",
+    "title": "Evening: Retaliate",
+    "ref": "§16.6.1",
+    "steps": [
+      {
+        "title": "Battle tại mỗi Militant nếu có thể",
+        "rule": "Đầu Evening, bạn phải Battle ở mỗi Militant enclave nếu có thể thực hiện battle hợp lệ. Chọn đối thủ hợp lệ tại từng clearing; token không tự cho quân để tấn công. Không có enemy để battle hoặc không có warrior tấn công hợp lệ thì không thực hiện trận đó. Không cần rule để Battle. Không được tự bỏ qua một trận hợp lệ vì ngại ambush."
+      },
+      {
+        "title": "Kiểm tra enemy mới và Mercenaries",
+        "rule": "Nếu trong bước Retaliate có enemy pieces được đặt vào một Militant enclave vốn chưa có địch, bạn cũng phải battle chúng. Nếu chỉ có Mercenaries mới giúp battle được thì vẫn phải battle theo luật dịch vụ. Retaliate không tốn ba action Daylight và diễn ra trước Integrate. Áp dụng luật battle, hiệu ứng card và các giới hạn dịch vụ; không giả định mọi Militant luôn có battle."
+      }
+    ]
+  },
+  {
+    "id": "integrate",
+    "title": "Evening: Integrate và rút bài",
+    "ref": "§16.6.2–3",
+    "steps": [
+      {
+        "title": "Ghi điểm một chất bằng một lá",
+        "rule": "Sau Retaliate, có thể spend 1 lá Cáo để ghi 1 VP cho mỗi Peaceful enclave matching Cáo. Lá Chim có thể được xem là Cáo, Thỏ hoặc Chuột cho lần này. Integrate tối đa một lần/lượt. Không ghi chất Ếch, nên không spend lá Ếch để cộng mọi Peaceful. Militant không ghi điểm Integrate; không cần rule các Peaceful được tính."
+      },
+      {
+        "title": "Rút theo tổng Peaceful và giữ tối đa 5 lá",
+        "rule": "Sau Integrate, đếm mọi Peaceful trên map để rút: 0–1 rút 1 lá, 2–3 rút 2, 4–7 rút 3, từ 8 rút 4. Sau đó nếu tay vượt 5, chọn discard xuống 5. Rút theo tổng Peaceful mọi chất, không chỉ chất vừa Integrate. Một lần rút nhiều lá chỉ lá đầu được chọn Pond; bỏ bài tay cuối lượt không phải bỏ ngẫu nhiên như Provoke."
+      }
+    ]
+  },
+  {
+    "id": "dominance",
+    "title": "Bài Ếch và Frog Dominance",
+    "ref": "Frog Cards; Frog Dominance",
+    "steps": [
+      {
+        "title": "Craft và dùng hiệu ứng bài Ếch",
+        "rule": "Bất kỳ phe nào cũng có thể rút và craft các lá Ếch theo cost. Nhiều hiệu ứng yêu cầu hoặc buộc Cộng đồng làm action; Cộng đồng cũng có thể craft để dùng hiệu ứng ấy cho mình. Làm đúng câu chữ lá thật, gồm timing, ai chọn và ai hành động. Craft hiệu ứng không tự cho Integrate thêm lần hoặc bỏ giới hạn khác nếu card không nói vậy."
+      },
+      {
+        "title": "Kích hoạt và điều kiện thắng",
+        "rule": "Theo luật Dominance chung, từ 10 VP trong Daylight có thể kích hoạt Frog Dominance. Người kích hoạt thắng đầu Birdsong của họ nếu rule ít nhất 2 enclave trên sông, Peaceful hoặc Militant. Kích hoạt thì bỏ marker VP, không tiếp tục ghi VP. Frog Dominance không dùng trong game 2 người. Người khác ngoài Ếch cũng có thể kích hoạt; rule enclave nghĩa là rule clearing chứa token."
+      },
+      {
+        "title": "Enclave Defense khi Ếch phòng thủ",
+        "rule": "Người có Frog Dominance đang kích hoạt thêm faction warriors của họ tại clearing có enclave vào quân phòng thủ khi Ếch defending. Những quân này nhận hits sau quân Ếch, trừ khi chính người có Dominance là attacker. Chỉ áp dụng với enclave tại battle clearing. Nếu cùng có Peacekeepers của Dơi, Ếch chọn phối hợp quân Dơi và quân Enclave Defense nhận hits sau quân mình. Không tự trao rule hoặc chuyển chủ quân."
+      }
+    ]
+  },
+  {
+    "id": "interactions",
+    "title": "Tương tác với các phe khác",
+    "ref": "Matching; luật phe liên quan",
+    "steps": [
+      {
+        "title": "Decree của Đại bàng và Sway của Chuột chũi",
+        "rule": "Peaceful ở Cáo đáp ứng cả Decree Cáo và Decree Ếch. Lật Militant có thể khiến Decree Cáo không còn matching nơi đó. Chuột chũi có thể dùng một clearing hai chất để hỗ trợ một lá Sway thuộc một trong hai chất. Một clearing hai chất vẫn chỉ hỗ trợ 1 lá trong Sway, không phải 2. Giới hạn action và presence của từng phe vẫn áp dụng. Frog cards không wild như Chim."
+      },
+      {
+        "title": "Revolt của Liên minh và garden Thằn Lằn",
+        "rule": "Liên minh có thể trộn Cáo và Ếch để Revolt ở clearing Cáo Peaceful. Tại Militant chỉ Frog, không có base Frog nên không thể đặt base để Revolt. Thằn Lằn có thể dùng Frog cho Recruit/Build tại enclave, rồi chọn garden theo chất in của clearing. Garden không có bản Frog; dùng chất in Cáo/Thỏ/Chuột để chọn mảnh garden. Muốn craft, vẫn xét garden có chất in trùng Outcast, còn icon cung cấp theo chất clearing hiện tại. Card/map có ngoại lệ riêng vẫn áp dụng."
+      }
+    ]
+  },
+  {
+    "id": "example",
+    "title": "Ví dụ một lượt hoàn chỉnh",
+    "ref": "§16.4–6",
+    "steps": [
+      {
+        "title": "Craft, Reconcile và Settle",
+        "rule": "Ví dụ có 2 Peaceful Cáo và 1 Militant Thỏ. Sau craft, chọn Reconcile lật Thỏ Peaceful; người rule Thỏ rút 1. Daylight Settle tới một clearing Cáo chưa có enclave, giành rule nhờ các Move rồi đặt Peaceful mới. Giả định mọi Move và placement hợp lệ, đủ quân/token. Hiện có 3 Peaceful Cáo và 1 Peaceful Thỏ, tổng 4; bạn còn tối đa 2 action Daylight."
+      },
+      {
+        "title": "Integrate và rút bài",
+        "rule": "Bạn có thể kết thúc Daylight sớm, không buộc dùng hết ba action. Không còn Militant nên Retaliate không có trận. Spend một Cáo Integrate ghi 3 VP, rồi rút 3 lá nhờ tổng 4 Peaceful. Có thể chọn lá đầu từ Pond nếu có, hai lá còn lại từ deck. Các số là ví dụ một trạng thái hợp lệ; không phải setup hay lộ trình bắt buộc."
+      }
+    ]
+  },
+  {
+    "id": "strategy",
+    "title": "Mẹo quản lý enclave và bài tay",
+    "ref": "Mẹo chơi · không phải luật",
+    "steps": [
+      {
+        "title": "Cân bằng tuyển quân, rút bài và ghi điểm",
+        "rule": "Militant giúp tuyển quân, nhưng không tính điểm Integrate và buộc Battle ở Evening nếu có thể. Hãy nhìn enclave nào cần giữ Peaceful, enclave nào dùng làm nơi tập hợp, và tay còn lá matching để Integrate không. Đây là mẹo, không phải luật bắt buộc. Provoke discard ngẫu nhiên có thể làm mất lá định Integrate, nên cân nhắc thứ tự và dự phòng bài."
+      },
+      {
+        "title": "Theo dõi sự hiện diện của đối thủ",
+        "rule": "Negotiations có thể giúp bạn lấy lại Peaceful; ngược lại một battle ở nơi hòa bình có thể lật nhiều enclave cùng lúc nếu phe tấn công hiện diện rộng. Theo dõi pieces của từng đối thủ trước khi mở rộng. Token không cho rule và hòa bình không ngăn bị đánh. Điểm thêm vẫn có thể đến từ craft item, loại enemy building/token hoặc hiệu ứng card hợp lệ."
+      }
+    ]
+  }
 ];
-export const faqs=[
-["Peaceful có thay chất gốc không?","Không. Nó thêm Frog, nên clearing có hai chất. Militant thay chất gốc bằng Frog."],
-["Enclave có cho rule hoặc chiếm slot không?","Không. Đây là token. Muốn Settle đặt Peaceful vẫn phải rule theo quân/building và khả năng phe."],
-["Ếch có phải wild như Chim không?","Không. Frog là chất riêng. Chim vẫn có thể matching Frog theo luật wild chung; Frog không tự matching Cáo/Thỏ/Chuột."],
-["Một enclave Peaceful craft hai icon được không?","Không. Mỗi enclave activate tối đa một lần/lượt; chọn chất gốc hoặc Frog, không cung cấp cả hai cùng lúc."],
-["Craft sau Reconcile được không?","Bước craft mặc định diễn ra trước Rally/Reconcile. Không quay lại bước craft sau khi đã hòa giải."],
-["Rally và Reconcile làm cả hai được không?","Không. Phải chọn một trong hai. Reconcile được lật bất kỳ số Militant, kể cả 0."],
-["Reconcile ai được rút bài?","Người rule clearing mỗi enclave vừa lật. Có thể là Ếch hoặc đối thủ; không ai rule thì không ai rút."],
-["Settle có được đi nhiều lần từ cùng một clearing?","Trong một Settle, Move vào đích từ mỗi clearing kề tối đa một lần. Bạn có thể dùng Settle khác nếu còn action."],
-["Settle vừa Battle vừa đặt Peaceful được không?","Không. Sau phần Move, chọn Battle hoặc đặt Peaceful nếu đủ điều kiện. Cần Settle khác nếu muốn đánh rồi đặt token."],
-["Provoke có cần rule hay có quân tại đích mới?","Đặt Militant mới cần clearing trên sông hoặc có warrior Ếch, chưa có enclave và placement hợp lệ. Không cần rule; nếu trên sông thì không cần quân sẵn."],
-["Provoke chỉ thêm quân tại enclave mới?","Không. Sau lật/đặt, thêm 1 warrior tại MỌI Militant hiện tại, kể cả token có từ trước."],
-["Không có bài vẫn Provoke được không?","Có. Tay trống bỏ qua bước discard. Có bài thì discard ngẫu nhiên 1 lá, không chọn tùy ý."],
-["Bị đánh Peaceful nhưng không mất quân, có lật không?","Có. Sau battle đủ điều kiện, lật các Peaceful có pieces của phe tấn công và đặt quân tại mỗi nơi vừa lật, kể cả battle không gây thiệt hại."],
-["Peaceful bị phá thì đặt quân tại token đã mất?","Không có token để lật ở nơi ấy nữa. Các Peaceful còn lại có pieces của phe gây sự vẫn lật và đặt quân theo phản ứng."],
-["Ếch chủ động Battle có tự gây Fears Come to Pass?","Không. Trigger battle là enemy tấn công Ếch đang defending tại Peaceful; remove Peaceful ngoài battle bởi enemy là trigger khác."],
-["Negotiations có cần warrior không?","Cần faction piece của người thương lượng; building hoặc token cũng được. Không tính hireling như faction piece của họ."],
-["Negotiations trả lá matching không?","Không. Một lá bất kỳ cho người khác đang rule, nếu có. Tự rule hoặc không ai rule thì không trả. Mỗi enemy tối đa một lần trong lượt mình."],
-["Retaliate có phải đánh khi không có quân Ếch không?","Chỉ làm Battle thực hiện được theo luật; không có warrior tấn công hợp lệ thì không thể battle. Có Mercenaries đủ điều kiện là cách duy nhất để battle thì vẫn phải làm."],
-["Integrate bằng lá Frog tính mọi Peaceful?","Không. Không được ghi chất Frog. Spend Cáo/Thỏ/Chuột hoặc Chim xem là một trong ba chất ấy; chỉ Peaceful matching chất chọn được tính."],
-["Có Integrate Cáo rồi Thỏ cùng lượt không?","Không. Tối đa một lần, spend một lá, chọn một chất để ghi điểm. Không cần rule các enclave được tính."],
-["Rút bài tính cả Militant không?","Không. Chỉ tổng Peaceful: 0–1 rút 1; 2–3 rút 2; 4–7 rút 3; 8+ rút 4. Không tính riêng chất vừa ghi điểm."],
-["Rút 3 lá có lấy cả 3 từ Pond không?","Không. Chỉ lá đầu mỗi lần rút được chọn lấy trên cùng Pond; các lá khác từ deck. Không chọn lá ở giữa ao."],
-["Lá Ếch discard có vào Lost Souls không?","Không. Pond được ưu tiên cho lá Ếch. Khi deck xáo lại, xáo cả Pond vào deck mới."],
-["Frog Dominance cần hai enclave Peaceful không?","Không bắt buộc Peaceful. Cần rule ít nhất hai enclave trên sông ở đầu Birdsong của người kích hoạt. Vẫn theo điều kiện kích hoạt Dominance chung; game 2 người không dùng lá này."],
-["Enclave bị loại, clearing còn chất Frog không?","Chất Frog do enclave ấy tạo ra mất theo token; clearing theo chất in và các hiệu ứng khác còn áp dụng. Bài Frog trong deck không tự tạo chất Frog trên map."]
+
+export const faqs = [
+  [
+    "Peaceful có thay chất gốc không?",
+    "Không. Nó thêm Frog, nên clearing có hai chất. Militant thay chất gốc bằng Frog."
+  ],
+  [
+    "Enclave có cho rule hoặc chiếm slot không?",
+    "Không. Đây là token. Muốn Settle đặt Peaceful vẫn phải rule theo quân/building và khả năng phe."
+  ],
+  [
+    "Ếch có phải wild như Chim không?",
+    "Không. Frog là chất riêng. Chim vẫn có thể matching Frog theo luật wild chung; Frog không tự matching Cáo/Thỏ/Chuột."
+  ],
+  [
+    "Một enclave Peaceful craft hai icon được không?",
+    "Không. Mỗi enclave activate tối đa một lần/lượt; chọn chất gốc hoặc Frog, không cung cấp cả hai cùng lúc."
+  ],
+  [
+    "Craft sau Reconcile được không?",
+    "Bước craft mặc định diễn ra trước Rally/Reconcile. Không quay lại bước craft sau khi đã hòa giải."
+  ],
+  [
+    "Rally và Reconcile làm cả hai được không?",
+    "Không. Phải chọn một trong hai. Reconcile được lật bất kỳ số Militant, kể cả 0."
+  ],
+  [
+    "Reconcile ai được rút bài?",
+    "Người rule clearing mỗi enclave vừa lật. Có thể là Ếch hoặc đối thủ; không ai rule thì không ai rút."
+  ],
+  [
+    "Settle có được đi nhiều lần từ cùng một clearing?",
+    "Trong một Settle, Move vào đích từ mỗi clearing kề tối đa một lần. Bạn có thể dùng Settle khác nếu còn action."
+  ],
+  [
+    "Settle vừa Battle vừa đặt Peaceful được không?",
+    "Không. Sau phần Move, chọn Battle hoặc đặt Peaceful nếu đủ điều kiện. Cần Settle khác nếu muốn đánh rồi đặt token."
+  ],
+  [
+    "Provoke có cần rule hay có quân tại đích mới?",
+    "Đặt Militant mới cần clearing trên sông hoặc có warrior Ếch, chưa có enclave và placement hợp lệ. Không cần rule; nếu trên sông thì không cần quân sẵn."
+  ],
+  [
+    "Provoke chỉ thêm quân tại enclave mới?",
+    "Không. Sau lật/đặt, thêm 1 warrior tại MỌI Militant hiện tại, kể cả token có từ trước."
+  ],
+  [
+    "Không có bài vẫn Provoke được không?",
+    "Có. Tay trống bỏ qua bước discard. Có bài thì discard ngẫu nhiên 1 lá, không chọn tùy ý."
+  ],
+  [
+    "Bị đánh Peaceful nhưng không mất quân, có lật không?",
+    "Có. Sau battle đủ điều kiện, lật các Peaceful có pieces của phe tấn công và đặt quân tại mỗi nơi vừa lật, kể cả battle không gây thiệt hại."
+  ],
+  [
+    "Peaceful bị phá thì đặt quân tại token đã mất?",
+    "Không có token để lật ở nơi ấy nữa. Các Peaceful còn lại có pieces của phe gây sự vẫn lật và đặt quân theo phản ứng."
+  ],
+  [
+    "Ếch chủ động Battle có tự gây Fears Come to Pass?",
+    "Không. Trigger battle là enemy tấn công Ếch đang defending tại Peaceful; remove Peaceful ngoài battle bởi enemy là trigger khác."
+  ],
+  [
+    "Negotiations có cần warrior không?",
+    "Cần faction piece của người thương lượng; building hoặc token cũng được. Không tính hireling như faction piece của họ."
+  ],
+  [
+    "Negotiations trả lá matching không?",
+    "Không. Một lá bất kỳ cho người khác đang rule, nếu có. Tự rule hoặc không ai rule thì không trả. Mỗi enemy tối đa một lần trong lượt mình."
+  ],
+  [
+    "Retaliate có phải đánh khi không có quân Ếch không?",
+    "Chỉ làm Battle thực hiện được theo luật; không có warrior tấn công hợp lệ thì không thể battle. Có Mercenaries đủ điều kiện là cách duy nhất để battle thì vẫn phải làm."
+  ],
+  [
+    "Integrate bằng lá Frog tính mọi Peaceful?",
+    "Không. Không được ghi chất Frog. Spend Cáo/Thỏ/Chuột hoặc Chim xem là một trong ba chất ấy; chỉ Peaceful matching chất chọn được tính."
+  ],
+  [
+    "Có Integrate Cáo rồi Thỏ cùng lượt không?",
+    "Không. Tối đa một lần, spend một lá, chọn một chất để ghi điểm. Không cần rule các enclave được tính."
+  ],
+  [
+    "Rút bài tính cả Militant không?",
+    "Không. Chỉ tổng Peaceful: 0–1 rút 1; 2–3 rút 2; 4–7 rút 3; 8+ rút 4. Không tính riêng chất vừa ghi điểm."
+  ],
+  [
+    "Rút 3 lá có lấy cả 3 từ Pond không?",
+    "Không. Chỉ lá đầu mỗi lần rút được chọn lấy trên cùng Pond; các lá khác từ deck. Không chọn lá ở giữa ao."
+  ],
+  [
+    "Lá Ếch discard có vào Lost Souls không?",
+    "Không. Pond được ưu tiên cho lá Ếch. Khi deck xáo lại, xáo cả Pond vào deck mới."
+  ],
+  [
+    "Frog Dominance cần hai enclave Peaceful không?",
+    "Không bắt buộc Peaceful. Cần rule ít nhất hai enclave trên sông ở đầu Birdsong của người kích hoạt. Vẫn theo điều kiện kích hoạt Dominance chung; game 2 người không dùng lá này."
+  ],
+  [
+    "Enclave bị loại, clearing còn chất Frog không?",
+    "Chất Frog do enclave ấy tạo ra mất theo token; clearing theo chất in và các hiệu ứng khác còn áp dụng. Bài Frog trong deck không tự tạo chất Frog trên map."
+  ]
 ];

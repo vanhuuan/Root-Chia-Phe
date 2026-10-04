@@ -5,35 +5,36 @@ export const plots=[
 {id:"extortion",name:"Extortion",vi:"Tống tiền",effect:"Khi lật: lấy ngẫu nhiên 1 lá từ mỗi đối thủ có piece phe ở đây. Khi còn ngửa trên map: thêm 1 lá rút mỗi Evening. Không lấy thêm bài của đối thủ vào mỗi lượt."},
 {id:"raid",name:"Raid",vi:"Đột kích",effect:"Khi bị loại, dù úp hay ngửa: đặt 1 Quạ tại mỗi clearing kề clearing vừa mất Raid. Nếu bị Exposure đoán đúng và loại thì không đặt quân."}
 ] as const;
-export const scenes=[
-{id:"setup",title:"Ba bóng đen",ref:"§13.2–13.3",steps:[
-{title:"Quạ không cần một thủ đô",story:"Khi Mèo dựng xưởng và Đại bàng giữ roost, ba Quạ lặng lẽ tản ra: một ở làng Cáo, một ở làng Thỏ, một ở làng Chuột. Trong kho, tám âm mưu vẫn giấu mặt.",rule:"Standard Setup: nguồn 15 warrior và 8 plot (2 mỗi loại). Đặt 1 warrior ở một clearing mỗi suit, tổng 3. Chưa đặt plot trên map; ADSET dùng thẻ setup riêng."},
-{title:"Bí mật nằm dưới chiếc lông",story:"Chỉ bạn biết sau mặt úp là gì. Quạ không cần cai trị cả khu rừng: hãy giữ những bí mật sống đến bình minh sau.",rule:"Mỗi clearing tối đa 1 plot. Bạn được xem plot úp của mình bất cứ lúc nào. Plot là token, không chiếm building slot và không cộng vào rule."}]},
-{id:"plots",title:"Bốn lời đe dọa",ref:"§13.7",steps:[
-{title:"Mỗi bí mật một công dụng",story:"Đối thủ nhìn thấy chiếc lông nhưng chẳng biết đó là một vụ nổ, một chiếc bẫy, lời tống tiền hay cái cớ gọi thêm quân. Chọn từng loại để khám phá.",rule:"Bomb và Extortion xử lý hiệu ứng ngay khi lật. Snare có hiệu lực khi ngửa. Raid kích hoạt khi bị loại, với ngoại lệ Exposure."},
-{title:"Bẫy không phải bức tường",story:"Một đội Mèo vẫn bước vào làng có Bẫy ngửa. Nhưng khi muốn rời đi hoặc gọi quân mới vào, chúng mới nhận ra đường lui đã bị khóa.",rule:"Snare cấm địch place vào và move ra; không cấm move vào, battle hoặc remove piece. Nimble chỉ bỏ yêu cầu rule, không vượt qua lệnh cấm của Snare."}]},
-{id:"birdsong",title:"Bình minh của bí mật",ref:"§13.4; §4.1",steps:[
-{title:"Thợ làm trước, âm mưu lật sau",story:"Trước khi công bố kế hoạch, Quạ dùng những plot sẵn có để craft. Một plot úp ở làng Thỏ vẫn giúp craft như plot ngửa ở làng Thỏ.",rule:"Birdsong theo thứ tự Craft → Flip Plots → Recruit. Craft bằng plot úp hoặc ngửa; suit lấy từ clearing. Mỗi crafting piece kích hoạt tối đa 1 lần mỗi lượt."},
-{title:"Có người canh mới công bố",story:"Âm mưu ở làng không còn Quạ phải nằm yên. Bạn tuyển quân ở cuối bình minh nên không thể gọi lính đến rồi quay lại lật trong lượt này.",rule:"Chỉ lật plot úp tại clearing có ít nhất 1 warrior Quạ. Lật là tùy chọn, từng token một. Plot đặt trong Daylight thường đợi Birdsong lượt sau mới lật."}]},
-{id:"flip",title:"Bí mật thành điểm",ref:"§13.4.2; §13.7.1",steps:[
-{title:"Lật một, đếm tất cả",story:"Đã có một Bẫy ngửa. Bạn công bố Tống tiền: giờ hai plot đang ngửa, nên nhận hai điểm. Công bố thêm Raid, ba plot ngửa đem lại ba điểm nữa.",rule:"Mỗi lần lật, ghi VP bằng số plot ngửa hiện có trên map, tính cả plot vừa lật. Không ghi lại điểm mỗi Evening chỉ vì plot còn đó."},
-{title:"Vụ nổ làm thay đổi lần lật sau",story:"Bom cũng được tính điểm lúc vừa ngửa, rồi nổ và rời map. Nếu còn một bí mật khác cần lật, hãy thử thứ tự để thấy số điểm thay đổi.",rule:"Ghi điểm lật trước, rồi xử lý Bomb/Extortion. Bom rời map nên không còn góp vào số plot ngửa của lần lật kế tiếp. Nếu đạt 30 VP, thắng ngay theo luật chung."}]},
-{id:"recruit",title:"Một lá gọi cả suit",ref:"§13.4.3",steps:[
-{title:"Tiếng gọi truyền qua các làng",story:"Một lá Thỏ không chỉ gọi lính tại nơi bạn đã có mặt. Nó gọi một Quạ tại từng clearing Thỏ có thể đặt quân, từ nguồn còn lại.",rule:"Recruit tùy chọn, tối đa 1 lần/lượt: spend 1 lá, đặt 1 warrior tại mỗi clearing matching. Lá Chim: chọn đúng 1 suit Cáo/Thỏ/Chuột, không tuyển tại toàn bộ map."},
-{title:"Đông quân nhưng vẫn có giới hạn",story:"Quạ không thể xuất hiện ở nơi bị Keep của Mèo cấm đặt, và nguồn hết thì không thể lấy quân tưởng tượng để bù.",rule:"Recruit không yêu cầu rule hay Quạ có sẵn. Tuân thủ hạn chế place và giới hạn nguồn. Nếu không đủ quân, đặt tối đa có thể; Birdsong không có cơ chế Turmoil."}]},
-{id:"daylight",title:"Ba việc trong bóng tối",ref:"§13.2.3; §13.5",steps:[
-{title:"Chọn việc, không đọc Decree",story:"Ban ngày bạn có tối đa ba hành động. Có thể Move rồi Plot rồi Battle, hoặc lặp cùng một việc nếu mọi điều kiện vẫn thỏa.",rule:"Tối đa 3 hành động, tùy thứ tự và được lặp: Move, Plot, Battle, Trick. Move nhờ Nimble bỏ yêu cầu rule nơi đi/nơi đến, vẫn cần đường kề và quân để di chuyển."},
-{title:"Quân đổi lấy một chiếc lông",story:"Quạ đầu tiên rời bàn để giấu plot thứ nhất. Plot thứ hai tốn hai Quạ, plot thứ ba tốn ba. Mỗi nhóm phải đứng sẵn ở đúng clearing đặt plot.",rule:"Plot: tại clearing chưa có plot, remove 1 warrior + 1 cho mỗi plot đã đặt lượt này, rồi đặt 1 plot úp từ nguồn. Không cần rule, không spend bài; phải trả đủ chi phí. Chi phí không reset khi sang Evening."}]},
-{id:"trick",title:"Đổi chỗ lời đồn",ref:"§13.5.4",steps:[
-{title:"Hai bí mật đổi địa chỉ",story:"Đối thủ đã đoán nơi này có Bom? Đổi hai plot úp để thông tin ấy không còn chắc chắn. Hoặc chuyển hai plot ngửa để thay đổi nơi Bẫy có tác dụng.",rule:"Trick tốn 1 hành động: swap 2 plot trên map, cả hai cùng úp hoặc cùng ngửa. Không đổi một úp với một ngửa. Không cần warrior tại hai clearing."},
-{title:"Đổi chỗ không phải lật",story:"Tống tiền ngửa đổi sang làng khác không tự lấy thêm bài. Raid đổi chỗ cũng không gọi quân, vì token vẫn trên map.",rule:"Trick không tạo VP lật, không xử lý hiệu ứng khi lật và không tính là đặt plot mới cho chi phí Plot. Token giữ nguyên mặt khi đổi chỗ."}]},
-{id:"exposure",title:"Họ đã đoán ra chưa?",ref:"§13.2.4; §1.4.3",steps:[
-{title:"Một lá bài đặt cược",story:"Mèo có piece tại làng Cáo chứa plot úp. Chúng đưa ra lá Cáo và đoán. Nếu sai, Quạ lấy lá bài; nếu đúng, bí mật bị loại và Mèo nhận một điểm.",rule:"Exposure trong lượt của đối thủ: cần piece phe họ ở clearing chứa plot úp và reveal 1 lá matching (Chim là wild). Sai: đưa lá cho Quạ; đúng: giữ lá, loại plot, +1 VP."},
-{title:"Đột kích bị lộ thì không gọi viện binh",story:"Họ đoán đúng Raid. Quạ không được gọi quân ở các làng bên cạnh. Đoán sai vẫn có thể thử tiếp bằng lá khác, miễn đủ điều kiện.",rule:"Exposure có thể làm nhiều lần, nhưng không dùng sau khi bắt đầu bước cuối lượt của mình và không chen ngang hành động khác. Raid bị Exposure loại không kích hoạt đặt quân."}]},
-{id:"battle",title:"Đặc vụ dưới mặt úp",ref:"§13.2.5; §13.7.4; §4.3",steps:[
-{title:"Tấn công một bí mật có giá của nó",story:"Mèo tấn công plot úp. Ngay cả khi không còn warrior Quạ bảo vệ, các đặc vụ vẫn gây thêm một hit cho phe phòng thủ.",rule:"Embedded Agents: khi Quạ phòng thủ tại clearing có plot úp, gây +1 extra hit, kể cả defenseless. Plot ngửa không cho bonus này; Quạ tấn công cũng không được bonus."},
-{title:"Mất Raid có thể gọi quân về",story:"Nếu Raid bị loại trong battle, mỗi clearing kề nhận một warrior Quạ từ nguồn. Người loại token vẫn ghi điểm như thường.",rule:"Raid bị loại úp/ngửa đều kích hoạt, trừ Exposure. Đặt quân tại clearing kề, không phải clearing vừa mất Raid; tuân thủ nguồn và hạn chế place. Bonus defenseless của bên tấn công vẫn áp dụng khi Quạ không có warrior."}]},
-{id:"evening",title:"Thêm việc hay thêm bài?",ref:"§13.6",steps:[
-{title:"Làm thêm, bỏ lượt rút",story:"Trời tối nhưng một âm mưu vẫn thiếu người. Bạn có thể Exert để làm thêm đúng một việc, đổi lại không rút bài tối nay — kể cả bài thưởng Tống tiền.",rule:"Exert tùy chọn: làm 1 hành động trong danh sách Daylight và bỏ rút bài Evening. Nếu Plot bằng Exert, chi phí tiếp tục đếm các plot đã đặt trong lượt."},
-{title:"Giữ bài cho bình minh tới",story:"Nếu không Exert, bạn rút một lá cơ bản và thêm một lá cho mỗi Tống tiền ngửa. Dù lựa chọn thế nào, tay quá năm lá vẫn phải bỏ xuống năm.",rule:"Không Exert: rút 1 + số Extortion ngửa trên map. Sau đó giới hạn tay 5 lá vẫn áp dụng, kể cả khi bỏ rút vì Exert. Không có điểm tự động cuối lượt từ plot."}]}
+export const topics=[
+{id:"setup",title:"Thiết lập và token âm mưu",ref:"§13.2–13.3",steps:[
+{title:"Thiết lập tiêu chuẩn",rule:"Standard Setup: nguồn 15 warrior và 8 plot (2 mỗi loại). Đặt 1 warrior ở một clearing mỗi suit, tổng 3. Chưa đặt plot trên map; ADSET dùng thẻ setup riêng."},
+{title:"Giới hạn token và thông tin bí mật",rule:"Mỗi clearing tối đa 1 plot. Bạn được xem plot úp của mình bất cứ lúc nào. Plot là token, không chiếm building slot và không cộng vào rule."}]},
+{id:"plots",title:"Bốn loại âm mưu",ref:"§13.7",steps:[
+...plots.map(plot=>({title:`${plot.vi} (${plot.name})`,rule:plot.effect})),
+{title:"Thời điểm áp dụng hiệu ứng",rule:"Bomb và Extortion xử lý hiệu ứng ngay khi lật. Snare có hiệu lực khi ngửa. Raid kích hoạt khi bị loại, với ngoại lệ Exposure."},
+{title:"Giới hạn của Bẫy (Snare)",rule:"Snare cấm địch place vào và move ra; không cấm move vào, battle hoặc remove piece. Nimble chỉ bỏ yêu cầu rule, không vượt qua lệnh cấm của Snare."}]},
+{id:"birdsong",title:"Bình minh: Chế tạo, Lật, Tuyển quân",ref:"§13.4; §4.1",steps:[
+{title:"Chế tạo bằng token âm mưu",rule:"Birdsong theo thứ tự Craft → Flip Plots → Recruit. Craft bằng plot úp hoặc ngửa; suit lấy từ clearing. Mỗi crafting piece kích hoạt tối đa 1 lần mỗi lượt."},
+{title:"Điều kiện lật âm mưu",rule:"Chỉ lật plot úp tại clearing có ít nhất 1 warrior Quạ. Lật là tùy chọn, từng token một. Plot đặt trong Daylight thường đợi Birdsong lượt sau mới lật."}]},
+{id:"flip",title:"Lật âm mưu và ghi điểm",ref:"§13.4.2; §13.7.1",steps:[
+{title:"Điểm cho mỗi lần lật",rule:"Mỗi lần lật, ghi VP bằng số plot ngửa hiện có trên map, tính cả plot vừa lật. Không ghi lại điểm mỗi Evening chỉ vì plot còn đó."},
+{title:"Ghi điểm trước hiệu ứng Bom",rule:"Ghi điểm lật trước, rồi xử lý Bomb/Extortion. Bom rời map nên không còn góp vào số plot ngửa của lần lật kế tiếp. Nếu đạt 30 VP, thắng ngay theo luật chung."}]},
+{id:"recruit",title:"Tuyển quân bằng một lá bài",ref:"§13.4.3",steps:[
+{title:"Tuyển tại mọi clearing cùng chất",rule:"Recruit tùy chọn, tối đa 1 lần/lượt: spend 1 lá, đặt 1 warrior tại mỗi clearing matching. Lá Chim: chọn đúng 1 suit Cáo/Thỏ/Chuột, không tuyển tại toàn bộ map."},
+{title:"Hạn chế đặt quân và nguồn quân",rule:"Recruit không yêu cầu rule hay Quạ có sẵn. Tuân thủ hạn chế place và giới hạn nguồn. Nếu không đủ quân, đặt tối đa có thể; Birdsong không có cơ chế Turmoil."}]},
+{id:"daylight",title:"Ban ngày: tối đa ba hành động",ref:"§13.2.3; §13.5",steps:[
+{title:"Di chuyển, Đặt âm mưu, Chiến đấu, Đánh tráo",rule:"Tối đa 3 hành động, tùy thứ tự và được lặp: Move, Plot, Battle, Trick. Move nhờ Nimble bỏ yêu cầu rule nơi đi/nơi đến, vẫn cần đường kề và quân để di chuyển."},
+{title:"Chi phí đặt âm mưu tăng trong lượt",rule:"Plot: tại clearing chưa có plot, remove 1 warrior + 1 cho mỗi plot đã đặt lượt này, rồi đặt 1 plot úp từ nguồn. Không cần rule, không spend bài; phải trả đủ chi phí. Chi phí không reset khi sang Evening."}]},
+{id:"trick",title:"Đánh tráo âm mưu (Trick)",ref:"§13.5.4",steps:[
+{title:"Đổi vị trí hai token cùng mặt",rule:"Trick tốn 1 hành động: swap 2 plot trên map, cả hai cùng úp hoặc cùng ngửa. Không đổi một úp với một ngửa. Không cần warrior tại hai clearing."},
+{title:"Đánh tráo không kích hoạt hiệu ứng lật",rule:"Trick không tạo VP lật, không xử lý hiệu ứng khi lật và không tính là đặt plot mới cho chi phí Plot. Token giữ nguyên mặt khi đổi chỗ."}]},
+{id:"exposure",title:"Vạch trần âm mưu (Exposure)",ref:"§13.2.4; §1.4.3",steps:[
+{title:"Điều kiện và kết quả đoán",rule:"Exposure trong lượt của đối thủ: cần piece phe họ ở clearing chứa plot úp và reveal 1 lá matching (Chim là wild). Sai: đưa lá cho Quạ; đúng: giữ lá, loại plot, +1 VP."},
+{title:"Thời điểm Exposure và ngoại lệ Raid",rule:"Exposure có thể làm nhiều lần, nhưng không dùng sau khi bắt đầu bước cuối lượt của mình và không chen ngang hành động khác. Raid bị Exposure loại không kích hoạt đặt quân."}]},
+{id:"battle",title:"Chiến đấu và Đặc vụ ngầm",ref:"§13.2.5; §13.7.4; §4.3",steps:[
+{title:"Thêm hit khi phòng thủ với âm mưu úp",rule:"Embedded Agents: khi Quạ phòng thủ tại clearing có plot úp, gây +1 extra hit, kể cả defenseless. Plot ngửa không cho bonus này; Quạ tấn công cũng không được bonus."},
+{title:"Đột kích (Raid) khi bị loại",rule:"Raid bị loại úp/ngửa đều kích hoạt, trừ Exposure. Đặt quân tại clearing kề, không phải clearing vừa mất Raid; tuân thủ nguồn và hạn chế place. Bonus defenseless của bên tấn công vẫn áp dụng khi Quạ không có warrior."}]},
+{id:"evening",title:"Buổi tối: Exert hoặc rút bài",ref:"§13.6",steps:[
+{title:"Exert: thêm một hành động, bỏ rút bài",rule:"Exert tùy chọn: làm 1 hành động trong danh sách Daylight và bỏ rút bài Evening. Nếu Plot bằng Exert, chi phí tiếp tục đếm các plot đã đặt trong lượt."},
+{title:"Rút bài và giới hạn tay",rule:"Không Exert: rút 1 + số Extortion ngửa trên map. Sau đó giới hạn tay 5 lá vẫn áp dụng, kể cả khi bỏ rút vì Exert. Không có điểm tự động cuối lượt từ plot."}]}
 ];
